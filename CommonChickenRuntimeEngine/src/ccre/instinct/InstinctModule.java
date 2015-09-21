@@ -18,9 +18,10 @@
  */
 package ccre.instinct;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.channel.BooleanInput;
 import ccre.concurrency.ReporterThread;
-import ccre.log.Logger;
 import ccre.time.Time;
 
 /**
@@ -112,17 +113,17 @@ public abstract class InstinctModule extends InstinctBaseModule {
             }
             try {
                 try {
-                    Logger.info("Started " + getTypeName() + ".");
+                	LoggerFactory.getLogger(this.getClass()).debug("Started " + getTypeName() + ".");
                     autonomousMain();
-                    Logger.info("Completed " + getTypeName() + ".");
+                    LoggerFactory.getLogger(this.getClass()).debug("Completed " + getTypeName() + ".");
                 } catch (InterruptedException ex) {
-                    Logger.info("Interrupted " + getTypeName() + ".");
+                	LoggerFactory.getLogger(this.getClass()).debug("Interrupted " + getTypeName() + ".");
                 } catch (AutonomousModeOverException ex) {
-                    Logger.info("Exited " + getTypeName() + " by stop.");
+                	LoggerFactory.getLogger(this.getClass()).debug("Exited " + getTypeName() + " by stop.");
                     continue;
                 }
             } catch (Throwable t) {
-                Logger.severe("Exception thrown during Autonomous mode!", t);
+            	LoggerFactory.getLogger(this.getClass()).error("Exception thrown during Autonomous mode!", t);
             }
             while (shouldBeRunning.get()) {
                 try {

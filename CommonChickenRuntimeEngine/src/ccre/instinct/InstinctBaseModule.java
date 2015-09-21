@@ -18,11 +18,12 @@
  */
 package ccre.instinct;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.channel.BooleanInput;
 import ccre.channel.EventInput;
 import ccre.channel.EventOutput;
 import ccre.channel.FloatInput;
-import ccre.log.Logger;
 import ccre.time.Time;
 
 /**
@@ -202,7 +203,7 @@ public abstract class InstinctBaseModule {
      */
     protected void waitForTime(long milliseconds) throws InterruptedException, AutonomousModeOverException {
         if (milliseconds < 0) {
-            Logger.warning("Negative wait in Instinct: " + milliseconds);
+        	LoggerFactory.getLogger(this.getClass()).warn("Negative wait in Instinct: " + milliseconds);
             return;
         } else if (milliseconds == 0) {
             return;// Do nothing.

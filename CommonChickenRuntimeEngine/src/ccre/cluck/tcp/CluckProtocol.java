@@ -26,10 +26,11 @@ import java.net.SocketTimeoutException;
 import java.util.LinkedList;
 import java.util.Random;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.cluck.CluckLink;
 import ccre.cluck.CluckNode;
 import ccre.concurrency.ReporterThread;
-import ccre.log.Logger;
 import ccre.net.ClientSocket;
 
 /**
@@ -132,14 +133,14 @@ public class CluckProtocol {
                     }
                     if (!expectKeepAlives && "KEEPALIVE".equals(dest) && source == null && data.length >= 2 && data[0] == CluckNode.RMT_NEGATIVE_ACK && data[1] == 0x6D) {
                         expectKeepAlives = true;
-                        Logger.info("Detected KEEPALIVE message. Expecting future keepalives on " + linkName + ".");
+                        LoggerFactory.getLogger(CluckProtocol.class).info("Detected KEEPALIVE message. Expecting future keepalives on " + linkName + ".");
                     }
                     source = prependLink(linkName, source);
                     long start = System.currentTimeMillis();
                     node.transmit(dest, source, data, denyLink);
                     long endAt = System.currentTimeMillis();
                     if (endAt - start > 1000) {
-                        Logger.warning("[LOCAL] Took a long time to process: " + dest + " <- " + source + " of " + (endAt - start) + " ms");
+                    	LoggerFactory.getLogger(CluckProtocol.class).warn("[LOCAL] Took a long time to process: " + dest + " <- " + source + " of " + (endAt - start) + " ms");
                     }
                     lastReceive = System.currentTimeMillis();
                 } catch (SocketTimeoutException ex) {
@@ -151,10 +152,10 @@ public class CluckProtocol {
                 }
             }
         } catch (SocketTimeoutException ex) {
-            Logger.fine("Link timed out: " + linkName);
+        	LoggerFactory.getLogger(CluckProtocol.class).debug("Link timed out: " + linkName);
         } catch (SocketException ex) {
             if ("Connection reset".equals(ex.getMessage())) {
-                Logger.fine("Link receiving disconnected: " + linkName);
+            	LoggerFactory.getLogger(CluckProtocol.class).debug("Link receiving disconnected: " + linkName);
             } else {
                 throw ex;
             }
@@ -191,7 +192,7 @@ public class CluckProtocol {
 
             public synchronized boolean send(String dest, String source, byte[] data) {
                 if (isRunning) {
-                    Logger.severe("[LOCAL] Already running transmit!");
+                	LoggerFactory.getLogger(this.getClass()).error("[LOCAL] Already running transmit!");
                     return true;
                 }
                 isRunning = true;
@@ -204,7 +205,7 @@ public class CluckProtocol {
                     }
                     Thread.yield();
                     if (size > 75) {
-                        Logger.warning("[LOCAL] Queue too long: " + size + " for " + dest + " at " + System.currentTimeMillis());
+                    	LoggerFactory.getLogger(this.getClass()).warn("[LOCAL] Queue too long: " + size + " for " + dest + " at " + System.currentTimeMillis());
                     }
                 } finally {
                     isRunning = false;
@@ -298,7 +299,7 @@ public class CluckProtocol {
                     dout.writeLong(checksum(data, begin));
                 }
             } catch (IOException ex) {
-                Logger.warning("Bad IO in " + this + ": " + ex);
+            	LoggerFactory.getLogger(this.getClass()).warn("Bad IO in " + this + ": " + ex);
             }
         }
     }

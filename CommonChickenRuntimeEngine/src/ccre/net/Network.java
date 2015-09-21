@@ -32,7 +32,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 
-import ccre.log.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The global Network handler. This contains a location to store the current
@@ -128,7 +128,7 @@ public class Network {
         try {
             enm = NetworkInterface.getNetworkInterfaces();
         } catch (SocketException ex) {
-            Logger.severe("Could not enumerate IP addresses!", ex);
+        	LoggerFactory.getLogger(Network.class).error("Could not enumerate IP addresses!", ex);
         }
         if (enm == null) {
             return Collections.emptyList();
@@ -143,7 +143,7 @@ public class Network {
                 if (raw.length == 4) {
                     allAddresses.add(addr.getHostAddress());
                 } else if (raw.length != 16) {
-                    Logger.warning("Found an address that's not 4 or 16 long: " + Arrays.toString(raw));
+                	LoggerFactory.getLogger(Network.class).warn("Found an address that's not 4 or 16 long: " + Arrays.toString(raw));
                 }
             }
         }

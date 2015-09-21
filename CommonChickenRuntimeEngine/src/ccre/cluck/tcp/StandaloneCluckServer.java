@@ -18,9 +18,10 @@
  */
 package ccre.cluck.tcp;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.channel.EventOutput;
 import ccre.cluck.Cluck;
-import ccre.log.Logger;
 import ccre.log.NetworkAutologger;
 import ccre.net.Network;
 
@@ -46,11 +47,11 @@ public class StandaloneCluckServer {
                     b.append(addr).append(", ");
                 }
                 b.setLength(b.length() - 2);
-                Logger.info(b.append("] - uptime ").append((System.currentTimeMillis() - time) / 1000).append(" seconds.").toString());
+                LoggerFactory.getLogger(this.getClass()).info(b.append("] - uptime ").append((System.currentTimeMillis() - time) / 1000).append(" seconds.").toString());
             }
         });
         Cluck.setupServer();
-        Logger.info("Server is running.");
+        LoggerFactory.getLogger(StandaloneCluckServer.class).info("Server is running.");
     }
 
     private StandaloneCluckServer() {

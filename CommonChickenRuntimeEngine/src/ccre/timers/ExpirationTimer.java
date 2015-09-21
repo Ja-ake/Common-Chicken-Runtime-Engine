@@ -21,6 +21,8 @@ package ccre.timers;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.channel.BooleanInput;
 import ccre.channel.BooleanOutput;
 import ccre.channel.BooleanStatus;
@@ -29,7 +31,6 @@ import ccre.channel.EventOutput;
 import ccre.channel.EventStatus;
 import ccre.channel.FloatInput;
 import ccre.concurrency.ReporterThread;
-import ccre.log.Logger;
 import ccre.time.Time;
 
 /**
@@ -169,7 +170,7 @@ public final class ExpirationTimer {
             try {
                 t.cnsm.event();
             } catch (Throwable thr) {
-                Logger.severe("Exception in ExpirationTimer dispatch!", thr);
+            	LoggerFactory.getLogger(this.getClass()).error("Exception in ExpirationTimer dispatch!", thr);
             }
         }
     }

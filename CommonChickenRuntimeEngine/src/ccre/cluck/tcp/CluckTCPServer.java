@@ -22,9 +22,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.cluck.CluckLink;
 import ccre.cluck.CluckNode;
-import ccre.log.Logger;
 import ccre.net.ClientSocket;
 import ccre.net.ConnectionReceiverThread;
 import ccre.util.UniqueIds;
@@ -72,7 +73,7 @@ public class CluckTCPServer extends ConnectionReceiverThread {
                     if (linkName == null) {
                         linkName = UniqueIds.global.nextHexId("tcpserv");
                     }
-                    Logger.fine("Client connected at " + System.currentTimeMillis() + " named " + linkName);
+                    LoggerFactory.getLogger(this.getClass()).debug("Client connected at " + System.currentTimeMillis() + " named " + linkName);
                     CluckProtocol.setTimeoutOnSocket(conn);
                     CluckLink deny = CluckProtocol.handleSend(dout, linkName, node);
                     CluckProtocol.handleRecv(din, linkName, node, deny);
@@ -84,7 +85,7 @@ public class CluckTCPServer extends ConnectionReceiverThread {
                 din.close();
             }
         } catch (IOException ex) {
-            Logger.warning("Bad IO in " + Thread.currentThread() + ": " + ex);
+        	LoggerFactory.getLogger(this.getClass()).warn("Bad IO in " + Thread.currentThread() + ": " + ex);
         }
     }
 }

@@ -25,11 +25,12 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.HashMap;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.channel.BooleanOutput;
 import ccre.channel.BooleanStatus;
 import ccre.channel.FloatOutput;
 import ccre.channel.FloatStatus;
-import ccre.log.Logger;
 import ccre.util.UniqueIds;
 
 /**
@@ -62,7 +63,7 @@ public final class StorageSegment {
                 int ind = line.indexOf('=');
                 if (ind == -1) {// Invalid or empty line.
                     if (!line.isEmpty() && keepInvalidLines) {
-                        Logger.warning("Invalid line ignored in configuration: " + line + " - saving under backup key.");
+                        LoggerFactory.getLogger(StorageSegment.class).warn("Invalid line ignored in configuration: " + line + " - saving under backup key.");
                         target.put(UniqueIds.global.nextHexId("unknown-" + System.currentTimeMillis() + "-" + line.hashCode()), line);
                     }
                     continue;
@@ -94,7 +95,7 @@ public final class StorageSegment {
         try {
             InputStream target = Storage.openInput("ccre_storage_" + name);
             if (target == null) {
-                Logger.info("No data file for: " + name + " - assuming empty.");
+            	LoggerFactory.getLogger(this.getClass()).info("No data file for: " + name + " - assuming empty.");
             } else {
                 try {
                     loadProperties(target, true, data);
@@ -103,7 +104,7 @@ public final class StorageSegment {
                 }
             }
         } catch (IOException ex) {
-            Logger.warning("Error reading storage: " + name, ex);
+            LoggerFactory.getLogger(this.getClass()).warn("Error reading storage: " + name, ex);
         }
     }
 
@@ -144,7 +145,7 @@ public final class StorageSegment {
                 try {
                     for (String key : data.keySet()) {
                         if (key.contains("=")) {
-                            Logger.warning("Invalid key ignored during save: " + key + " - saving under backup key.");
+                            LoggerFactory.getLogger(this.getClass()).warn("Invalid key ignored during save: " + key + " - saving under backup key.");
                             data.put(UniqueIds.global.nextHexId("badkey-" + System.currentTimeMillis() + "-" + key.hashCode()), key);
                         } else {
                             String value = data.get(key);
@@ -157,7 +158,7 @@ public final class StorageSegment {
                     pout.close();
                 }
             } catch (IOException ex) {
-                Logger.warning("Error writing storage: " + name, ex);
+                LoggerFactory.getLogger(this.getClass()).warn("Error writing storage: " + name, ex);
             }
             modified = false;
         }
@@ -198,12 +199,12 @@ public final class StorageSegment {
                 float default_ = draw == null ? Float.NaN : Float.parseFloat(draw);
                 // If the default is the same as the holder's default, then load the value
                 if (draw == null || Float.floatToIntBits(default_) == Float.floatToIntBits(originalValue)) {
-                    Logger.config("Loaded config for " + name + ": def:" + default_ + " old:" + originalValue + " new:" + value);
+                    LoggerFactory.getLogger(this.getClass()).debug("Loaded config for " + name + ": def:" + default_ + " old:" + originalValue + " new:" + value);
                     holder.set(value);
                 }
                 // Otherwise, the default has changed from the holder, and therefore we want the updated value from the holder
             } catch (NumberFormatException ex) {
-                Logger.warning("Invalid float value: '" + vraw + "'!", ex);
+                LoggerFactory.getLogger(this.getClass()).warn("Invalid float value: '" + vraw + "'!", ex);
             }
         }
         holder.send(new SegmentFloatSaver(key, default_key, originalValue));
@@ -234,12 +235,12 @@ public final class StorageSegment {
                 String draw = getStringForKey(default_key);
                 // If the default is the same as the holder's default, then load the value
                 if (draw == null || Boolean.parseBoolean(draw) == originalValue) {
-                    Logger.config("Loaded config for " + name + ": def:" + draw + " old:" + originalValue + " new:" + value);
+                    LoggerFactory.getLogger(this.getClass()).debug("Loaded config for " + name + ": def:" + draw + " old:" + originalValue + " new:" + value);
                     holder.set(value);
                 }
                 // Otherwise, the default has changed from the holder, and therefore we want the updated value from the holder
             } catch (NumberFormatException ex) {
-                Logger.warning("Invalid boolean value: '" + vraw + "'!", ex);
+                LoggerFactory.getLogger(this.getClass()).warn("Invalid boolean value: '" + vraw + "'!", ex);
             }
         }
         holder.send(new SegmentBooleanSaver(key, default_key, originalValue));

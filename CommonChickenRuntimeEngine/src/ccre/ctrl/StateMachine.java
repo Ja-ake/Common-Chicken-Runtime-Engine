@@ -18,13 +18,15 @@
  */
 package ccre.ctrl;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.channel.BooleanInput;
 import ccre.channel.DerivedBooleanInput;
 import ccre.channel.EventInput;
 import ccre.channel.EventOutput;
 import ccre.channel.EventStatus;
+import ccre.log.CCRELogger;
 import ccre.log.LogLevel;
-import ccre.log.Logger;
 
 /**
  * A finite-state machine. This has a number of named, predefined states, which
@@ -339,7 +341,7 @@ public class StateMachine {
     public void autologTransitions(final LogLevel level, final String prefix) {
         onEnter.send(new EventOutput() {
             public void event() {
-                Logger.log(level, prefix + getStateName());
+                CCRELogger.logByLevel(LoggerFactory.getLogger(this.getClass()), level, prefix + getStateName());
             }
         });
     }

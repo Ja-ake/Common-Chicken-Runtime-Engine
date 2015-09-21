@@ -24,9 +24,10 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.channel.EventOutput;
 import ccre.cluck.rpc.RPCManager;
-import ccre.log.Logger;
 
 /**
  * A CluckNode is the core hub of the Cluck networking system on a device. It
@@ -187,7 +188,7 @@ public class CluckNode implements Serializable {
     public void transmit(String target, String source, byte[] data, CluckLink denyLink) {
         if (target == null) {
             if (data.length == 0 || data[0] != RMT_NEGATIVE_ACK) {
-                Logger.warning("Received message addressed to unreceving node (source: " + source + ")");
+            	LoggerFactory.getLogger(this.getClass()).warn("Received message addressed to unreceving node (source: " + source + ")");
             }
         } else if ("*".equals(target)) {
             broadcast(source, data, denyLink);
@@ -211,7 +212,7 @@ public class CluckNode implements Serializable {
                         links.remove(direct);
                     }
                 } catch (Throwable ex) {
-                    Logger.severe("Error while dispatching to Cluck link " + target, ex);
+                	LoggerFactory.getLogger(this.getClass()).error("Error while dispatching to Cluck link " + target, ex);
                 }
             }
         }
@@ -239,7 +240,7 @@ public class CluckNode implements Serializable {
                         links.remove(link);
                     }
                 } catch (Throwable ex) {
-                    Logger.severe("Error while broadcasting to Cluck link " + link, ex);
+                	LoggerFactory.getLogger(this.getClass()).error("Error while broadcasting to Cluck link " + link, ex);
                 }
             }
         }
@@ -253,7 +254,7 @@ public class CluckNode implements Serializable {
         if ((data.length == 0 || data[0] != RMT_NEGATIVE_ACK) && !target.contains("/rsch-") && (!direct.equals(lastMissingLink) || System.currentTimeMillis() >= lastMissingLinkError + 1000)) {
             lastMissingLink = direct;
             lastMissingLinkError = System.currentTimeMillis();
-            Logger.warning("No link for " + target + "(" + direct + ") from " + source + "!");
+            LoggerFactory.getLogger(this.getClass()).warn("No link for " + target + "(" + direct + ") from " + source + "!");
             transmit(source, target, new byte[] { RMT_NEGATIVE_ACK });
         }
     }
@@ -337,7 +338,7 @@ public class CluckNode implements Serializable {
             throw new NullPointerException();
         }
         if (links.get(linkName) != null) {
-            Logger.fine("Replaced current link on: " + linkName);
+        	LoggerFactory.getLogger(this.getClass()).debug("Replaced current link on: " + linkName);
         }
         links.put(linkName, link);
     }

@@ -18,13 +18,14 @@
  */
 package ccre.tuning;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.channel.BooleanStatus;
 import ccre.channel.EventOutput;
 import ccre.channel.FloatStatus;
 import ccre.cluck.Cluck;
 import ccre.cluck.CluckNode;
 import ccre.cluck.CluckPublisher;
-import ccre.log.Logger;
 import ccre.storage.Storage;
 import ccre.storage.StorageSegment;
 import ccre.util.UniqueIds;
@@ -142,7 +143,7 @@ public final class TuningContext {
      */
     public void flush() {
         segment.flush();
-        Logger.info("Flushed storage segment " + segment.getName());
+        LoggerFactory.getLogger(this.getClass()).info("Flushed storage segment " + segment.getName());
     }
 
     /**

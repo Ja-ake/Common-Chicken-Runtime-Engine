@@ -23,7 +23,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import ccre.log.Logger;
+import org.slf4j.LoggerFactory;
+
 import ccre.util.Utils;
 
 /**
@@ -130,7 +131,7 @@ public class EventStatus implements EventInput, EventOutput, Serializable {
             try {
                 found |= ec.eventWithRecovery();
             } catch (Throwable thr) {
-                Logger.severe("Event Subscriber Detached: " + ec, thr);
+                LoggerFactory.getLogger(this.getClass()).error("Event Subscriber Detached: " + ec, thr);
                 consumers.remove(ec);
                 found = true;
             }

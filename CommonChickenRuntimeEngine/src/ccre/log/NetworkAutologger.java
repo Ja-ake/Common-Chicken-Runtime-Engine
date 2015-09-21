@@ -21,6 +21,8 @@ package ccre.log;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.channel.EventOutput;
 import ccre.cluck.Cluck;
 import ccre.cluck.CluckNode;
@@ -41,12 +43,50 @@ public final class NetworkAutologger implements LoggingTarget, CluckRemoteListen
      */
     private static volatile boolean registered = false;
     private static final LoggingTarget localLoggingTarget = new LoggingTarget() {
-        public void log(LogLevel level, String message, Throwable throwable) {
-            Logger.log(level, "[NET] " + message, throwable);
+        public void log(LogLevel level, String message, Throwable throwable) {            
+            switch (level.id) {
+            case LogLevel.FATAL_ID:
+            	LoggerFactory.getLogger(this.getClass()).error("[NET] " + message, throwable);
+            	break;
+            case LogLevel.ERROR_ID:
+            	LoggerFactory.getLogger(this.getClass()).error("[NET] " + message, throwable);
+            	break;
+            case LogLevel.WARN_ID:
+            	LoggerFactory.getLogger(this.getClass()).warn("[NET] " + message, throwable);
+            	break;
+            case LogLevel.INFO_ID:
+            	LoggerFactory.getLogger(this.getClass()).info("[NET] " + message, throwable);
+            	break;
+            case LogLevel.DEBUG_ID:
+            	LoggerFactory.getLogger(this.getClass()).debug("[NET] " + message, throwable);
+            	break;
+            case LogLevel.TRACE_ID:
+            	LoggerFactory.getLogger(this.getClass()).trace("[NET] " + message, throwable);
+            	break;
+            }
         }
 
         public void log(LogLevel level, String message, String extended) {
-            Logger.logExt(level, "[NET] " + message, extended);
+            switch (level.id) {
+            case LogLevel.FATAL_ID:
+            	LoggerFactory.getLogger(this.getClass()).error("[NET] " + message, extended);
+            	break;
+            case LogLevel.ERROR_ID:
+            	LoggerFactory.getLogger(this.getClass()).error("[NET] " + message, extended);
+            	break;
+            case LogLevel.WARN_ID:
+            	LoggerFactory.getLogger(this.getClass()).warn("[NET] " + message, extended);
+            	break;
+            case LogLevel.INFO_ID:
+            	LoggerFactory.getLogger(this.getClass()).info("[NET] " + message, extended);
+            	break;
+            case LogLevel.DEBUG_ID:
+            	LoggerFactory.getLogger(this.getClass()).debug("[NET] " + message, extended);
+            	break;
+            case LogLevel.TRACE_ID:
+            	LoggerFactory.getLogger(this.getClass()).trace("[NET] " + message, extended);
+            	break;
+            }
         }
     };
 
@@ -56,12 +96,12 @@ public final class NetworkAutologger implements LoggingTarget, CluckRemoteListen
      */
     public static void register() {
         if (registered) {
-            Logger.warning("Network autologger registered twice!");
+        	LoggerFactory.getLogger(NetworkAutologger.class).warn("Network autologger registered twice!");
             return;
         }
         registered = true;
         NetworkAutologger nlog = new NetworkAutologger(Cluck.getNode());
-        Logger.addTarget(nlog);
+        CCRELoggerFactory.getLogger().addTarget(nlog);
         nlog.start();
     }
 
@@ -97,7 +137,7 @@ public final class NetworkAutologger implements LoggingTarget, CluckRemoteListen
         searcher.event();
         node.subscribeToStructureNotifications("netwatch-" + hereID, new EventOutput() {
             public void event() {
-                Logger.fine("[LOCAL] Rechecking logging...");
+            	LoggerFactory.getLogger(NetworkAutologger.class).trace("[LOCAL] Rechecking logging...");
                 searcher.event();
             }
         });
@@ -138,8 +178,8 @@ public final class NetworkAutologger implements LoggingTarget, CluckRemoteListen
             return;
         }
         if (remote.contains("auto-") && !localpath.equals(remote) && targetCache.get(remote) == null) {
-            targetCache.put(remote, CluckPublisher.subscribeLT(node, remote, LogLevel.FINEST));
-            Logger.config("[LOCAL] Loaded logger: " + remote);
+            targetCache.put(remote, CluckPublisher.subscribeLT(node, remote, LogLevel.TRACE));
+            LoggerFactory.getLogger(NetworkAutologger.class).debug("[LOCAL] Loaded logger: " + remote);
         }
         remotes.addIfAbsent(remote);
     }

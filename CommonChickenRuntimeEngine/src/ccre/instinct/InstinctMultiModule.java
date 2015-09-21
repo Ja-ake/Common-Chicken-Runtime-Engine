@@ -20,10 +20,11 @@ package ccre.instinct;
 
 import java.util.ArrayList;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.channel.BooleanInput;
 import ccre.channel.EventOutput;
 import ccre.cluck.CluckPublisher;
-import ccre.log.Logger;
 import ccre.rconf.RConf;
 import ccre.rconf.RConf.Entry;
 import ccre.rconf.RConfable;
@@ -122,7 +123,7 @@ public class InstinctMultiModule extends InstinctModule {
     public void publishDefaultControls(boolean showIndividualModes, boolean showCycleChooser) {
         CluckPublisher.publish(context.getNode(), "Autonomous Mode Check", new EventOutput() {
             public void event() {
-                Logger.info("Current autonomous mode: " + mode.getModeName());
+            	LoggerFactory.getLogger(this.getClass()).info("Current autonomous mode: " + mode.getModeName());
             }
         });
         if (showIndividualModes) {
@@ -130,7 +131,7 @@ public class InstinctMultiModule extends InstinctModule {
                 CluckPublisher.publish(context.getNode(), "Autonomous Mode: " + curmode.getModeName(), new EventOutput() {
                     public void event() {
                         setActiveMode(curmode);
-                        Logger.info("New autonomous mode: " + mode.getModeName());
+                        LoggerFactory.getLogger(this.getClass()).info("New autonomous mode: " + mode.getModeName());
                     }
                 });
             }
@@ -142,16 +143,16 @@ public class InstinctMultiModule extends InstinctModule {
                     for (InstinctModeModule m : modes) {
                         if (wasLast) {
                             setActiveMode(m);
-                            Logger.info("New autonomous mode: " + mode.getModeName());
+                            LoggerFactory.getLogger(this.getClass()).info("New autonomous mode: " + mode.getModeName());
                             return;
                         } else {
                             wasLast = (m == mode);
                         }
                     }
                     // Couldn't find the mode. (We would have returned earlier.)
-                    Logger.warning("Mode not found while iterating: " + mode.getModeName());
+                    LoggerFactory.getLogger(this.getClass()).warn("Mode not found while iterating: " + mode.getModeName());
                     setActiveMode(modes.get(0));// Just use the first mode.
-                    Logger.info("New autonomous mode: " + mode.getModeName());
+                    LoggerFactory.getLogger(this.getClass()).info("New autonomous mode: " + mode.getModeName());
                 }
             });
             CluckPublisher.publish(context.getNode(), "Autonomous Mode Previous", new EventOutput() {
@@ -160,15 +161,15 @@ public class InstinctMultiModule extends InstinctModule {
                     for (InstinctModeModule m : modes) {
                         if (m == mode) {
                             setActiveMode(last);
-                            Logger.info("New autonomous mode: " + mode.getModeName());
+                            LoggerFactory.getLogger(this.getClass()).info("New autonomous mode: " + mode.getModeName());
                             return;
                         }
                         last = m;
                     }
                     // Couldn't find the mode. (We would have returned earlier.)
-                    Logger.warning("Mode not found while iterating: " + mode.getModeName());
+                    LoggerFactory.getLogger(this.getClass()).warn("Mode not found while iterating: " + mode.getModeName());
                     setActiveMode(modes.get(0));// Just use the first mode.
-                    Logger.info("New autonomous mode: " + mode.getModeName());
+                    LoggerFactory.getLogger(this.getClass()).info("New autonomous mode: " + mode.getModeName());
                 }
             });
         }
@@ -222,7 +223,7 @@ public class InstinctMultiModule extends InstinctModule {
                 }
             }
             if (this.mode == null) {
-                Logger.warning("Invalid loaded mode name: " + modeName);
+            	LoggerFactory.getLogger(this.getClass()).warn("Invalid loaded mode name: " + modeName);
                 this.mode = defaultMode;
             }
         }
@@ -267,7 +268,7 @@ public class InstinctMultiModule extends InstinctModule {
         return this.addMode(new InstinctModeModule(name) {
             @Override
             protected void autonomousMain() throws AutonomousModeOverException, InterruptedException {
-                Logger.info(message);
+            	LoggerFactory.getLogger(this.getClass()).info(message);
             }
 
             @Override
@@ -280,9 +281,9 @@ public class InstinctMultiModule extends InstinctModule {
     @Override
     protected final void autonomousMain() throws AutonomousModeOverException, InterruptedException {
         if (mode == null) {
-            Logger.severe("No autonomous mode found! Did you remember to call InstinctMultiModule.loadSettings()?");
+        	LoggerFactory.getLogger(this.getClass()).error("No autonomous mode found! Did you remember to call InstinctMultiModule.loadSettings()?");
         } else {
-            Logger.info("Running autonomous mode: " + mode.getModeName());
+        	LoggerFactory.getLogger(this.getClass()).info("Running autonomous mode: " + mode.getModeName());
             mode.autonomousMain();
         }
     }

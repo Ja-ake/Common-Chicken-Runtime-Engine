@@ -20,9 +20,10 @@ package ccre.time;
 
 import java.util.PriorityQueue;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.channel.EventOutput;
 import ccre.concurrency.ReporterThread;
-import ccre.log.Logger;
 
 public class Scheduler {
 
@@ -56,11 +57,11 @@ public class Scheduler {
                 try {
                     ent.target.event();
                 } catch (Throwable throwable) {
-                    Logger.severe("Scheduler target threw an exception!", throwable);
+                	LoggerFactory.getLogger(this.getClass()).error("Scheduler target threw an exception!", throwable);
                 }
                 long delta = provider.nowMillis() - now;
                 if (delta > MAXIMUM_REASONABLE_DELAY) {
-                    Logger.warning("[LOCAL] Event exceeded maximum reasonable delay: " + ent + " for " + delta + " millis.");
+                	LoggerFactory.getLogger(this.getClass()).warn("[LOCAL] Event exceeded maximum reasonable delay: " + ent + " for " + delta + " millis.");
                 }
             }
         } catch (InterruptedException ex) {
