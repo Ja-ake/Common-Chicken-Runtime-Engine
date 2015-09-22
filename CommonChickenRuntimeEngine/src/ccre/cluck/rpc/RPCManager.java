@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.cluck.CluckNode;
@@ -38,6 +39,7 @@ import ccre.util.UniqueIds;
  * @author skeggsc
  */
 public final class RPCManager implements Serializable {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     private static final long serialVersionUID = -2530136013743162226L;
     private final CluckNode node;
@@ -62,7 +64,7 @@ public final class RPCManager implements Serializable {
         new CluckSubscriber(node) {
             @Override
             protected void receive(String source, byte[] data) {
-                LoggerFactory.getLogger(this.getClass()).warn("Message to RPC endpoint!");
+                logger.warn("Message to RPC endpoint!");
             }
 
             @Override
@@ -74,13 +76,13 @@ public final class RPCManager implements Serializable {
                         stream = localBindings.get(dest);
                     }
                     if (stream == null) {
-                        LoggerFactory.getLogger(this.getClass()).warn("No RPC binding for: " + dest);
+                        logger.warn("No RPC binding for: " + dest);
                     } else {
                         try {
                             stream.write(data, 1, data.length - 1);
                             stream.close();
                         } catch (IOException ex) {
-                            LoggerFactory.getLogger(this.getClass()).warn("Exception in RPC response write!", ex);
+                            logger.warn("Exception in RPC response write!", ex);
                         }
                         synchronized (RPCManager.this) {
                             localBindings.remove(dest);
@@ -154,7 +156,7 @@ public final class RPCManager implements Serializable {
                 try {
                     bindings.remove(rmt).close();
                 } catch (IOException ex) {
-                    LoggerFactory.getLogger(this.getClass()).warn("Exception during timeout close!", ex);
+                    logger.warn("Exception during timeout close!", ex);
                 }
             }
         }

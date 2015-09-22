@@ -18,6 +18,7 @@
  */
 package ccre.cluck;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -27,6 +28,7 @@ import org.slf4j.LoggerFactory;
  * @author skeggsc
  */
 public abstract class CluckSubscriber implements CluckLink {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * The CluckNode that this is attached to.
@@ -86,7 +88,7 @@ public abstract class CluckSubscriber implements CluckLink {
      * @param data The message data.
      */
     protected void handleOther(String dest, String source, byte[] data) {
-        LoggerFactory.getLogger(this.getClass()).warn("Unhandled side-channel message sent to " + linkName + " / " + dest + " from " + source + "!");
+        logger.warn("Unhandled side-channel message sent to " + linkName + " / " + dest + " from " + source + "!");
     }
 
     /**
@@ -117,7 +119,7 @@ public abstract class CluckSubscriber implements CluckLink {
      */
     protected boolean requireRMT(String source, byte[] data, byte rmt, int minLength) {
         if (data.length == 0) {
-            LoggerFactory.getLogger(this.getClass()).warn("Received null message from " + source);
+            logger.warn("Received null message from " + source);
         } else if (data[0] == CluckNode.RMT_PING && data.length == 1) {
             node.transmit(source, linkName, new byte[] { CluckNode.RMT_PING, rmt });
         } else if (data[0] == CluckNode.RMT_NEGATIVE_ACK) { // Discard messages
@@ -125,9 +127,9 @@ public abstract class CluckSubscriber implements CluckLink {
                                                             // link is closed.
             // Discard.
         } else if (data[0] != rmt) {
-            LoggerFactory.getLogger(this.getClass()).warn("Received wrong RMT: " + CluckNode.rmtToString(data[0]) + " from " + source + " (expected " + CluckNode.rmtToString(rmt) + ") addressed to " + linkName);
+            logger.warn("Received wrong RMT: " + CluckNode.rmtToString(data[0]) + " from " + source + " (expected " + CluckNode.rmtToString(rmt) + ") addressed to " + linkName);
         } else if (data.length < minLength) {
-            LoggerFactory.getLogger(this.getClass()).warn("Received too-short message from " + source);
+            logger.warn("Received too-short message from " + source);
         } else {
             return true;
         }

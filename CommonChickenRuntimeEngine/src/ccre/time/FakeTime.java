@@ -21,12 +21,14 @@ package ccre.time;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.EventOutput;
 
 // NOTE: this contains complex and likely slightly broken synchronization code. do not use it in production!
 public class FakeTime extends Time {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     private static final boolean debug = false;
 
@@ -62,7 +64,7 @@ public class FakeTime extends Time {
             try {
                 entry.target.event();
             } catch (Throwable thr) {
-                LoggerFactory.getLogger(this.getClass()).error("Schedule entry threw exception!", thr);
+                logger.error("Schedule entry threw exception!", thr);
             }
         }
         synchronized (this) {

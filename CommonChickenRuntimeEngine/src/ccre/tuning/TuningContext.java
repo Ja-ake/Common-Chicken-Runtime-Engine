@@ -18,6 +18,7 @@
  */
 package ccre.tuning;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.BooleanStatus;
@@ -37,6 +38,7 @@ import ccre.util.UniqueIds;
  * @author skeggsc
  */
 public final class TuningContext {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * The node to publish the values to.
@@ -144,7 +146,7 @@ public final class TuningContext {
      */
     public void flush() {
         segment.flush();
-        LoggerFactory.getLogger(this.getClass()).info("Flushed storage segment " + segment.getName());
+        logger.info("Flushed storage segment " + segment.getName());
     }
 
     /**

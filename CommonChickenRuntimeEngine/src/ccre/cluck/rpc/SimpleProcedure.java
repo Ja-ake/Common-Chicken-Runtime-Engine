@@ -22,6 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.time.Time;
@@ -39,6 +40,7 @@ import ccre.time.Time;
  * @author skeggsc
  */
 public abstract class SimpleProcedure implements RemoteProcedure {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * The result returned when a SimpleProcedure call times out.
@@ -94,7 +96,7 @@ public abstract class SimpleProcedure implements RemoteProcedure {
             out.write(invoke(in));
             out.close();
         } catch (IOException ex) {
-            LoggerFactory.getLogger(this.getClass()).warn("IO Exception during response from SimpleProcedure!", ex);
+            logger.warn("IO Exception during response from SimpleProcedure!", ex);
         }
     }
 

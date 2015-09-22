@@ -20,6 +20,7 @@ package ccre.drivers.chrobotics;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.EventOutput;
@@ -39,6 +40,8 @@ import ccre.time.Time;
  * @see ccre.drivers.chrobotics.UM7LT
  */
 public class InternalUM7LT { // default rate: 115200 baud.
+    private Logger logger = LoggerFactory.getLogger(getClass());
+    
     private final SerialIO rs232;
     private final Object rs232lock = new Object();
     /**
@@ -190,7 +193,7 @@ public class InternalUM7LT { // default rate: 115200 baud.
                 }
                 if (activeBuffer.length == to) {
                     // still no matched packet...?
-                    LoggerFactory.getLogger(this.getClass()).warn("RS232 input buffer overflow, somehow? Resetting buffer.");
+                    logger.warn("RS232 input buffer overflow, somehow? Resetting buffer.");
                     from = to = 0;
                 }
                 byte[] gotten = rs232.readBlocking(activeBuffer.length - to);
@@ -232,19 +235,19 @@ public class InternalUM7LT { // default rate: 115200 baud.
                 throw new IOException("Invalid packet that starts with bytes " + ByteFiddling.toHex(bytes, from, Math.min(to, from + 8)));
             }
         } catch (IOException ex) {
-            LoggerFactory.getLogger(this.getClass()).warn("UM7 message handling failed - attempting to reset state", ex);
+            logger.warn("UM7 message handling failed - attempting to reset state", ex);
         }
         incorrectPackets++;
         int possibleStartNMEA = ByteFiddling.indexOf(bytes, from + 1, to, (byte) '$');
         int possibleStartBinary = ByteFiddling.indexOf(bytes, from + 1, to, (byte) 's');
         if (possibleStartBinary != -1 && (possibleStartNMEA == -1 || possibleStartBinary < possibleStartNMEA)) {
-            LoggerFactory.getLogger(this.getClass()).debug("Skipping " + (possibleStartBinary - from) + " bytes to Binary.");
+            logger.debug("Skipping " + (possibleStartBinary - from) + " bytes to Binary.");
             return possibleStartBinary - from; // skip until the start
         } else if (possibleStartNMEA != -1 && !treatNMEAAsErroneous) {
-            LoggerFactory.getLogger(this.getClass()).debug("Skipping " + (possibleStartNMEA - from) + " bytes to NMEA.");
+            logger.debug("Skipping " + (possibleStartNMEA - from) + " bytes to NMEA.");
             return possibleStartNMEA - from; // skip until the start
         } else {
-            LoggerFactory.getLogger(this.getClass()).debug("Skipping " + (to - from) + " bytes to end (" + correctBinaryPackets + "/" + correctNMEAPackets + "/" + incorrectPackets + ")");
+            logger.debug("Skipping " + (to - from) + " bytes to end (" + correctBinaryPackets + "/" + correctNMEAPackets + "/" + incorrectPackets + ")");
             return to - from; // everything's bad. skip it all.
         }
     }
@@ -288,13 +291,13 @@ public class InternalUM7LT { // default rate: 115200 baud.
             lastUpdateTime = Time.currentTimeMillis();
             onUpdate.event();
         } else if (address == 0xAA) {
-            LoggerFactory.getLogger(this.getClass()).info("UM7LT firmware revision: " + new String(new char[] { (char) ((data[0] >> 24) & 0xFF), (char) ((data[0] >> 16) & 0xFF), (char) ((data[0] >> 8) & 0xFF), (char) (data[0] & 0xFF) }));
+            logger.info("UM7LT firmware revision: " + new String(new char[] { (char) ((data[0] >> 24) & 0xFF), (char) ((data[0] >> 16) & 0xFF), (char) ((data[0] >> 8) & 0xFF), (char) (data[0] & 0xFF) }));
         } else if (address == 0xAD) {
-            LoggerFactory.getLogger(this.getClass()).debug("UM7LT gyro calibrating...");
+            logger.debug("UM7LT gyro calibrating...");
         } else if (address == 0xC) {
-            LoggerFactory.getLogger(this.getClass()).debug("UM7LT gyro calibration updated.");
+            logger.debug("UM7LT gyro calibration updated.");
         } else if (address != 0) {
-            LoggerFactory.getLogger(this.getClass()).trace("UNHANDLED BINARY MESSAGE " + Integer.toHexString(address & 0xFF) + " [" + is_hidden + ":" + is_command_failed + "]");
+            logger.trace("UNHANDLED BINARY MESSAGE " + Integer.toHexString(address & 0xFF) + " [" + is_hidden + ":" + is_command_failed + "]");
         }
         return 2 + 4 * data_count + 2 + 3; // two for checksum, three for the
                                            // 'snp' that was stripped out.
@@ -406,7 +409,7 @@ public class InternalUM7LT { // default rate: 115200 baud.
     }
 
     private void handleNMEA(byte[] nmea, int from, int to) {
-        LoggerFactory.getLogger(this.getClass()).trace("UM7LT NMEA received: " + ByteFiddling.parseASCII(nmea, from, to));
+        logger.trace("UM7LT NMEA received: " + ByteFiddling.parseASCII(nmea, from, to));
     }
 
     /**
@@ -417,7 +420,7 @@ public class InternalUM7LT { // default rate: 115200 baud.
      */
     public void dumpSerialData() throws IOException {
         while (this.rs232.readNonblocking(1024).length > 0) {
-            LoggerFactory.getLogger(this.getClass()).trace("dumping...");
+            logger.trace("dumping...");
         }
     }
 }

@@ -22,6 +22,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.cluck.CluckLink;
@@ -36,6 +37,7 @@ import ccre.net.Network;
  * @author skeggsc
  */
 public class CluckTCPClient extends ReporterThread {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * The default port to run on.
@@ -164,7 +166,7 @@ public class CluckTCPClient extends ReporterThread {
             try {
                 sock.close();
             } catch (IOException ex) {
-                LoggerFactory.getLogger(this.getClass()).warn("IO Error while closing connection", ex);
+                logger.warn("IO Error while closing connection", ex);
             }
         }
     }
@@ -175,14 +177,14 @@ public class CluckTCPClient extends ReporterThread {
             while (isRunning) {
                 long start = System.currentTimeMillis();
                 if (logDuringNormalOperation) {
-                    LoggerFactory.getLogger(this.getClass()).debug("Connecting to " + remote + " at " + start);
+                    logger.debug("Connecting to " + remote + " at " + start);
                 }
                 String postfix = "";
                 closeActiveConnectionIfAny();
                 try {
                     postfix = tryConnection();
                 } catch (Throwable ex) {
-                    LoggerFactory.getLogger(this.getClass()).error("Uncaught exception in network handler!", ex);
+                    logger.error("Uncaught exception in network handler!", ex);
                 }
                 pauseBeforeSubsequentCycle(start, postfix);
             }
@@ -201,7 +203,7 @@ public class CluckTCPClient extends ReporterThread {
         long remaining = reconnectDelayMillis - spent;
         if (remaining > 0) {
             if (remaining > 500 && logDuringNormalOperation) {
-                LoggerFactory.getLogger(this.getClass()).debug("Waiting " + remaining + " milliseconds before reconnecting." + postfix);
+                logger.debug("Waiting " + remaining + " milliseconds before reconnecting." + postfix);
             }
             Thread.sleep(remaining);
         }
@@ -235,7 +237,7 @@ public class CluckTCPClient extends ReporterThread {
                         (ex.getMessage().startsWith("Remote server not available") || ex.getMessage().startsWith("Timed out while connecting")))) {
                     postfix = " (" + ex.getMessage() + ")";
                 } else {
-                    LoggerFactory.getLogger(this.getClass()).warn("IO Error while handling connection", ex);
+                    logger.warn("IO Error while handling connection", ex);
                 }
             }
         } finally {
@@ -247,7 +249,7 @@ public class CluckTCPClient extends ReporterThread {
 
     protected CluckLink doStart(DataInputStream din, DataOutputStream dout, ClientSocket socket) throws IOException {
         CluckProtocol.handleHeader(din, dout, remoteNameHint);
-        LoggerFactory.getLogger(this.getClass()).debug("Connected to " + remote + " at " + System.currentTimeMillis());
+        logger.debug("Connected to " + remote + " at " + System.currentTimeMillis());
         CluckProtocol.setTimeoutOnSocket(socket);
         CluckLink deny = CluckProtocol.handleSend(dout, linkName, node);
         node.notifyNetworkModified(); // Only send here, not on server.

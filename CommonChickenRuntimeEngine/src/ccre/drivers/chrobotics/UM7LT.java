@@ -20,6 +20,7 @@ package ccre.drivers.chrobotics;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.BooleanStatus;
@@ -41,6 +42,8 @@ import ccre.concurrency.ReporterThread;
  * @author skeggsc
  */
 public class UM7LT {
+    private Logger logger = LoggerFactory.getLogger(getClass());
+    
     private final InternalUM7LT internal;
 
     private final EventStatus eulerUpdateStatus = new EventStatus();
@@ -78,16 +81,16 @@ public class UM7LT {
                 int changed = newHealth ^ lastHealth;
                 if (autoreportFaults.get()) {
                     if ((changed & 0x100) != 0) {
-                        LoggerFactory.getLogger(this.getClass()).debug("UM7LT COMM: " + ((newHealth & 0x100) != 0 ? "FAULT" : "nominal"));
+                        logger.debug("UM7LT COMM: " + ((newHealth & 0x100) != 0 ? "FAULT" : "nominal"));
                     }
                     if ((changed & 0x22) != 0) {
-                        LoggerFactory.getLogger(this.getClass()).debug("UM7LT MAGN:" + ((newHealth & 0x2) != 0 ? " FAULT" : (newHealth & 0x20) != 0 ? " DISTORTED" : "nominal"));
+                        logger.debug("UM7LT MAGN:" + ((newHealth & 0x2) != 0 ? " FAULT" : (newHealth & 0x20) != 0 ? " DISTORTED" : "nominal"));
                     }
                     if ((changed & 0x18) != 0) {
-                        LoggerFactory.getLogger(this.getClass()).debug("UM7LT ACCL:" + ((newHealth & 0x8) != 0 ? " FAULT" : (newHealth & 0x10) != 0 ? " DISTORTED" : "nominal"));
+                        logger.debug("UM7LT ACCL:" + ((newHealth & 0x8) != 0 ? " FAULT" : (newHealth & 0x10) != 0 ? " DISTORTED" : "nominal"));
                     }
                     if ((changed & 0x4) != 0) {
-                        LoggerFactory.getLogger(this.getClass()).debug("UM7LT GYRO: " + ((newHealth & 0x4) != 0 ? " FAULT" : "nominal"));
+                        logger.debug("UM7LT GYRO: " + ((newHealth & 0x4) != 0 ? " FAULT" : "nominal"));
                     }
                 }
                 healthUpdateStatus.produce();
@@ -179,7 +182,7 @@ public class UM7LT {
                             internal.handleRS232Input(100);
                         }
                     } catch (Exception ex) {
-                        LoggerFactory.getLogger(this.getClass()).error("UM7LT thread failed. Resetting after ten seconds...", ex);
+                        logger.error("UM7LT thread failed. Resetting after ten seconds...", ex);
                         Thread.sleep(10000);
                     }
                 }
@@ -195,7 +198,7 @@ public class UM7LT {
             try {
                 zeroGyro();
             } catch (IOException e) {
-                LoggerFactory.getLogger(this.getClass()).warn("Could not initiate gyro zeroing", e);
+                logger.warn("Could not initiate gyro zeroing", e);
             }
         }
     };

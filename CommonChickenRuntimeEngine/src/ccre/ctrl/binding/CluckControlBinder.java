@@ -20,6 +20,7 @@ package ccre.ctrl.binding;
 
 import java.util.HashMap;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.EventInput;
@@ -40,6 +41,8 @@ import ccre.storage.StorageSegment;
  * @author skeggsc
  */
 public class CluckControlBinder implements RConfable {
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     private final ControlBindingDataSource sourceSet;
     private final ControlBindingDataSink sinkSet;
     // From sink to source.
@@ -243,7 +246,7 @@ public class CluckControlBinder implements RConfable {
         for (String bin : sourceSet.listBooleans()) {
             if (sourceSet.getBoolean(bin).get()) {
                 if (found != null) {
-                    LoggerFactory.getLogger(this.getClass()).warn("More than one active boolean source is pressed: at least '" + found + "' and '" + bin + "'");
+                    logger.warn("More than one active boolean source is pressed: at least '" + found + "' and '" + bin + "'");
                     return null;
                 }
                 found = bin;
@@ -257,7 +260,7 @@ public class CluckControlBinder implements RConfable {
         for (String fin : sourceSet.listFloats()) {
             if (Math.abs(sourceSet.getFloat(fin).get()) >= 0.8f) {
                 if (found != null) {
-                    LoggerFactory.getLogger(this.getClass()).warn("More than one active float source is pressed: at least '" + found + "' and '" + fin + "'");
+                    logger.warn("More than one active float source is pressed: at least '" + found + "' and '" + fin + "'");
                     return null;
                 }
                 found = fin;
@@ -267,11 +270,11 @@ public class CluckControlBinder implements RConfable {
     }
 
     private void load() {
-        LoggerFactory.getLogger(this.getClass()).debug("Loading control bindings for " + this.name);
+        logger.debug("Loading control bindings for " + this.name);
         for (String boolSink : sinkSet.listBooleans()) {
             String source = storage.getStringForKey("z" + boolSink);
             if (source != null && sourceSet.getBoolean(source) == null) {
-                LoggerFactory.getLogger(this.getClass()).warn("Invalid control binding boolean source: " + source);
+                logger.warn("Invalid control binding boolean source: " + source);
             } else {
                 rebindBoolean(boolSink, source);
             }
@@ -279,12 +282,12 @@ public class CluckControlBinder implements RConfable {
         for (String floatSink : sinkSet.listFloats()) {
             String source = storage.getStringForKey("f" + floatSink);
             if (source != null && sourceSet.getFloat(source) == null) {
-                LoggerFactory.getLogger(this.getClass()).warn("Invalid control binding float source: " + source);
+                logger.warn("Invalid control binding float source: " + source);
             } else {
                 rebindFloat(floatSink, source);
             }
         }
-        LoggerFactory.getLogger(this.getClass()).debug("Loaded " + (boolLinkage.size() + floatLinkage.size()) + " of " + (sinkSet.listBooleans().length + sinkSet.listFloats().length) + " control bindings for " + this.name);
+        logger.debug("Loaded " + (boolLinkage.size() + floatLinkage.size()) + " of " + (sinkSet.listBooleans().length + sinkSet.listFloats().length) + " control bindings for " + this.name);
         dirty = false;
     }
 

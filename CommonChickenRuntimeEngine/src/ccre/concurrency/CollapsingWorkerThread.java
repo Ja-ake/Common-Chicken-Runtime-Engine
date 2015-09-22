@@ -18,6 +18,7 @@
  */
 package ccre.concurrency;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.BooleanInput;
@@ -38,6 +39,7 @@ import ccre.channel.EventOutput;
  * @author skeggsc
  */
 public abstract class CollapsingWorkerThread extends ReporterThread implements EventOutput {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * Does this thread need to run its work?
@@ -174,7 +176,7 @@ public abstract class CollapsingWorkerThread extends ReporterThread implements E
                     doWork();
                 }
             } catch (Throwable t) {
-                LoggerFactory.getLogger(this.getClass()).error("Uncaught exception in worker thread: " + this.getName(), t);
+                logger.error("Uncaught exception in worker thread: " + this.getName(), t);
             }
             if (shouldIgnoreWhileRunning) {
                 needsToRun = false;

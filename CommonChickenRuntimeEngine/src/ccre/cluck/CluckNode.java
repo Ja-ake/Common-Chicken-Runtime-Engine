@@ -24,6 +24,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.EventOutput;
@@ -38,6 +39,7 @@ import ccre.cluck.rpc.RPCManager;
  * @author skeggsc
  */
 public class CluckNode implements Serializable {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     private static final long serialVersionUID = -5439319159206467512L;
     /**
@@ -188,7 +190,7 @@ public class CluckNode implements Serializable {
     public void transmit(String target, String source, byte[] data, CluckLink denyLink) {
         if (target == null) {
             if (data.length == 0 || data[0] != RMT_NEGATIVE_ACK) {
-                LoggerFactory.getLogger(this.getClass()).warn("Received message addressed to unreceving node (source: " + source + ")");
+                logger.warn("Received message addressed to unreceving node (source: " + source + ")");
             }
         } else if ("*".equals(target)) {
             broadcast(source, data, denyLink);
@@ -212,7 +214,7 @@ public class CluckNode implements Serializable {
                         links.remove(direct);
                     }
                 } catch (Throwable ex) {
-                    LoggerFactory.getLogger(this.getClass()).error("Error while dispatching to Cluck link " + target, ex);
+                    logger.error("Error while dispatching to Cluck link " + target, ex);
                 }
             }
         }
@@ -240,7 +242,7 @@ public class CluckNode implements Serializable {
                         links.remove(link);
                     }
                 } catch (Throwable ex) {
-                    LoggerFactory.getLogger(this.getClass()).error("Error while broadcasting to Cluck link " + link, ex);
+                    logger.error("Error while broadcasting to Cluck link " + link, ex);
                 }
             }
         }
@@ -256,7 +258,7 @@ public class CluckNode implements Serializable {
         if ((data.length == 0 || data[0] != RMT_NEGATIVE_ACK) && !target.contains("/rsch-") && (!direct.equals(lastMissingLink) || System.currentTimeMillis() >= lastMissingLinkError + 1000)) {
             lastMissingLink = direct;
             lastMissingLinkError = System.currentTimeMillis();
-            LoggerFactory.getLogger(this.getClass()).warn("No link for " + target + "(" + direct + ") from " + source + "!");
+            logger.warn("No link for " + target + "(" + direct + ") from " + source + "!");
             transmit(source, target, new byte[] { RMT_NEGATIVE_ACK });
         }
     }
@@ -340,7 +342,7 @@ public class CluckNode implements Serializable {
             throw new NullPointerException();
         }
         if (links.get(linkName) != null) {
-            LoggerFactory.getLogger(this.getClass()).debug("Replaced current link on: " + linkName);
+            logger.debug("Replaced current link on: " + linkName);
         }
         links.put(linkName, link);
     }

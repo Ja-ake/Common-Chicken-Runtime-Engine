@@ -20,6 +20,7 @@ package ccre.net;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.concurrency.ReporterThread;
@@ -31,6 +32,7 @@ import ccre.concurrency.ReporterThread;
  * @author skeggsc
  */
 public abstract class ConnectionReceiverThread extends ReporterThread {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * The port that the server is started on.
@@ -56,13 +58,13 @@ public abstract class ConnectionReceiverThread extends ReporterThread {
 
     @Override
     protected final void threadBody() throws IOException {
-        LoggerFactory.getLogger(this.getClass()).debug("About to listen on " + port);
+        logger.debug("About to listen on " + port);
         ServerSocket sock;
         try {
             sock = Network.bind(port);
         } catch (IOException e) {
             if (e.getClass().getName().equals("java.net.BindException")) {
-                LoggerFactory.getLogger(this.getClass()).warn("Failed to bind to port " + port + ".");
+                logger.warn("Failed to bind to port " + port + ".");
                 return;
             }
             throw e;

@@ -33,6 +33,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.EventOutput;
@@ -41,6 +42,7 @@ import ccre.time.Time;
 
 @RunWith(Parameterized.class)
 public class TickerTest {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     private static Time oldProvider;
     private static FakeTime fake;
@@ -174,7 +176,7 @@ public class TickerTest {
 
     @Test
     public void testLoopTooManyErrors() throws InterruptedException {
-        LoggerFactory.getLogger(this.getClass()).info("The following ticker main loop errors are purposeful.");
+        logger.info("The following ticker main loop errors are purposeful.");
         start(() -> {
             synchronized (TickerTest.this) {
                 counter++;
@@ -194,7 +196,7 @@ public class TickerTest {
 
     @Test
     public void testLoopAFewErrors() throws InterruptedException {
-        LoggerFactory.getLogger(this.getClass()).info("The following ticker main loop errors are purposeful.");
+        logger.info("The following ticker main loop errors are purposeful.");
         start(() -> {
             synchronized (TickerTest.this) {
                 counter++;
@@ -213,7 +215,7 @@ public class TickerTest {
 
     @Test
     public void testLoopScatteredErrors() throws InterruptedException {
-        LoggerFactory.getLogger(this.getClass()).info("The following ticker main loop errors are purposeful.");
+        logger.info("The following ticker main loop errors are purposeful.");
         start(() -> {
             synchronized (TickerTest.this) {
                 counter++;

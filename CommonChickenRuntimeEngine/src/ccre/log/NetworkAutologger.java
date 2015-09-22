@@ -21,6 +21,7 @@ package ccre.log;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.EventOutput;
@@ -37,6 +38,7 @@ import ccre.util.UniqueIds;
  * @author skeggsc
  */
 public final class NetworkAutologger implements LoggingTarget, CluckRemoteListener {
+    private static Logger logger = LoggerFactory.getLogger(NetworkAutologger.class);
 
     /**
      * Whether or not a NetworkAutologger has been registered globally.
@@ -46,22 +48,22 @@ public final class NetworkAutologger implements LoggingTarget, CluckRemoteListen
         public void log(LogLevel level, String message, Throwable throwable) {
             switch (level.id) {
             case LogLevel.FATAL_ID:
-                LoggerFactory.getLogger(this.getClass()).error("[NET] " + message, throwable);
+                logger.error("[NET] " + message, throwable);
                 break;
             case LogLevel.ERROR_ID:
-                LoggerFactory.getLogger(this.getClass()).error("[NET] " + message, throwable);
+                logger.error("[NET] " + message, throwable);
                 break;
             case LogLevel.WARN_ID:
-                LoggerFactory.getLogger(this.getClass()).warn("[NET] " + message, throwable);
+                logger.warn("[NET] " + message, throwable);
                 break;
             case LogLevel.INFO_ID:
-                LoggerFactory.getLogger(this.getClass()).info("[NET] " + message, throwable);
+                logger.info("[NET] " + message, throwable);
                 break;
             case LogLevel.DEBUG_ID:
-                LoggerFactory.getLogger(this.getClass()).debug("[NET] " + message, throwable);
+                logger.debug("[NET] " + message, throwable);
                 break;
             case LogLevel.TRACE_ID:
-                LoggerFactory.getLogger(this.getClass()).trace("[NET] " + message, throwable);
+                logger.trace("[NET] " + message, throwable);
                 break;
             }
         }
@@ -69,22 +71,22 @@ public final class NetworkAutologger implements LoggingTarget, CluckRemoteListen
         public void log(LogLevel level, String message, String extended) {
             switch (level.id) {
             case LogLevel.FATAL_ID:
-                LoggerFactory.getLogger(this.getClass()).error("[NET] " + message, extended);
+                logger.error("[NET] " + message, extended);
                 break;
             case LogLevel.ERROR_ID:
-                LoggerFactory.getLogger(this.getClass()).error("[NET] " + message, extended);
+                logger.error("[NET] " + message, extended);
                 break;
             case LogLevel.WARN_ID:
-                LoggerFactory.getLogger(this.getClass()).warn("[NET] " + message, extended);
+                logger.warn("[NET] " + message, extended);
                 break;
             case LogLevel.INFO_ID:
-                LoggerFactory.getLogger(this.getClass()).info("[NET] " + message, extended);
+                logger.info("[NET] " + message, extended);
                 break;
             case LogLevel.DEBUG_ID:
-                LoggerFactory.getLogger(this.getClass()).debug("[NET] " + message, extended);
+                logger.debug("[NET] " + message, extended);
                 break;
             case LogLevel.TRACE_ID:
-                LoggerFactory.getLogger(this.getClass()).trace("[NET] " + message, extended);
+                logger.trace("[NET] " + message, extended);
                 break;
             }
         }

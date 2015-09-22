@@ -18,6 +18,7 @@
  */
 package ccre.cluck.tcp;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.EventOutput;
@@ -31,6 +32,7 @@ import ccre.net.Network;
  * @author skeggsc
  */
 public class StandaloneCluckServer {
+    private static Logger logger = LoggerFactory.getLogger(StandaloneCluckServer.class);
 
     /**
      * Start the simple server.
@@ -47,7 +49,7 @@ public class StandaloneCluckServer {
                     b.append(addr).append(", ");
                 }
                 b.setLength(b.length() - 2);
-                LoggerFactory.getLogger(this.getClass()).info(b.append("] - uptime ").append((System.currentTimeMillis() - time) / 1000).append(" seconds.").toString());
+                logger.info(b.append("] - uptime ").append((System.currentTimeMillis() - time) / 1000).append(" seconds.").toString());
             }
         });
         Cluck.setupServer();

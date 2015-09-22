@@ -20,6 +20,7 @@ package ccre.concurrency;
 
 import java.io.InterruptedIOException;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.util.UniqueIds;
@@ -33,6 +34,7 @@ import ccre.util.UniqueIds;
  * @author skeggsc
  */
 public abstract class ReporterThread extends Thread {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     private static final UniqueIds idGen = new UniqueIds();
     /**
@@ -69,15 +71,15 @@ public abstract class ReporterThread extends Thread {
             threadBody();
         } catch (OutOfMemoryError oom) {
             System.err.println("OutOfMemory");
-            LoggerFactory.getLogger(this.getClass()).error("OutOfMemory");
+            logger.error("OutOfMemory");
             throw oom; // The out-of-memory error will crash the system, at
                        // least in the Squawk VM.
         } catch (InterruptedIOException ex) {
-            LoggerFactory.getLogger(this.getClass()).warn("Interruption (during IO) of Thread " + this.getName(), ex);
+            logger.warn("Interruption (during IO) of Thread " + this.getName(), ex);
         } catch (InterruptedException ex) {
-            LoggerFactory.getLogger(this.getClass()).warn("Interruption of Thread " + this.getName(), ex);
+            logger.warn("Interruption of Thread " + this.getName(), ex);
         } catch (Throwable thr) {
-            LoggerFactory.getLogger(this.getClass()).error("Abrupt termination of Thread " + this.getName(), thr);
+            logger.error("Abrupt termination of Thread " + this.getName(), thr);
         }
     }
 

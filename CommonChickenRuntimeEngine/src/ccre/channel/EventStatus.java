@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.util.Utils;
@@ -35,6 +36,7 @@ import ccre.util.Utils;
  */
 public class EventStatus implements EventInput, EventOutput, Serializable {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
     private static final long serialVersionUID = 115846451690403376L;
 
     /**
@@ -131,7 +133,7 @@ public class EventStatus implements EventInput, EventOutput, Serializable {
             try {
                 found |= ec.eventWithRecovery();
             } catch (Throwable thr) {
-                LoggerFactory.getLogger(this.getClass()).error("Event Subscriber Detached: " + ec, thr);
+                logger.error("Event Subscriber Detached: " + ec, thr);
                 consumers.remove(ec);
                 found = true;
             }

@@ -26,6 +26,7 @@ import java.net.SocketTimeoutException;
 import java.util.LinkedList;
 import java.util.Random;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.cluck.CluckLink;
@@ -39,7 +40,6 @@ import ccre.net.ClientSocket;
  * @author skeggsc
  */
 public class CluckProtocol {
-
     static final int CURRENT_VERSION = 0;// NOTE: changing this will break
                                          // compatibility with anything older
                                          // than CCRE v3!
@@ -195,11 +195,13 @@ public class CluckProtocol {
         final ReporterThread main = new CluckSenderThread("Cluck-Send-" + linkName, queue, dout);
         main.start();
         CluckLink clink = new CluckLink() {
+            private Logger logger = LoggerFactory.getLogger(getClass());
+
             private boolean isRunning = false;
 
             public synchronized boolean send(String dest, String source, byte[] data) {
                 if (isRunning) {
-                    LoggerFactory.getLogger(this.getClass()).error("[LOCAL] Already running transmit!");
+                    logger.error("[LOCAL] Already running transmit!");
                     return true;
                 }
                 isRunning = true;
@@ -212,7 +214,7 @@ public class CluckProtocol {
                     }
                     Thread.yield();
                     if (size > 75) {
-                        LoggerFactory.getLogger(this.getClass()).warn("[LOCAL] Queue too long: " + size + " for " + dest + " at " + System.currentTimeMillis());
+                        logger.warn("[LOCAL] Queue too long: " + size + " for " + dest + " at " + System.currentTimeMillis());
                     }
                 } finally {
                     isRunning = false;
@@ -268,6 +270,7 @@ public class CluckProtocol {
     }
 
     private static class CluckSenderThread extends ReporterThread {
+        private Logger logger = LoggerFactory.getLogger(getClass());
 
         private final LinkedList<SendableEntry> queue;
         private final DataOutputStream dout;
@@ -307,7 +310,7 @@ public class CluckProtocol {
                     dout.writeLong(checksum(data, begin));
                 }
             } catch (IOException ex) {
-                LoggerFactory.getLogger(this.getClass()).warn("Bad IO in " + this + ": " + ex);
+                logger.warn("Bad IO in " + this + ": " + ex);
             }
         }
     }

@@ -21,6 +21,7 @@ package ccre.timers;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.BooleanInput;
@@ -44,6 +45,7 @@ import ccre.time.Time;
  * @author skeggsc
  */
 public final class ExpirationTimer {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * The list of tasks, sorted in order with the first task (shortest delay)
@@ -170,7 +172,7 @@ public final class ExpirationTimer {
             try {
                 t.cnsm.event();
             } catch (Throwable thr) {
-                LoggerFactory.getLogger(this.getClass()).error("Exception in ExpirationTimer dispatch!", thr);
+                logger.error("Exception in ExpirationTimer dispatch!", thr);
             }
         }
     }

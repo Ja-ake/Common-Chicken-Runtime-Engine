@@ -18,6 +18,7 @@
  */
 package ccre.ctrl;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.BooleanInput;
@@ -40,6 +41,8 @@ import ccre.log.LogLevel;
  * @author skeggsc
  */
 public class StateMachine {
+    private Logger logger = LoggerFactory.getLogger(getClass());
+    
     private int currentState;
     private final int numberOfStates;
     private final EventStatus onExit = new EventStatus();
@@ -341,7 +344,7 @@ public class StateMachine {
     public void autologTransitions(final LogLevel level, final String prefix) {
         onEnter.send(new EventOutput() {
             public void event() {
-                CCRELogger.logByLevel(LoggerFactory.getLogger(this.getClass()), level, prefix + getStateName());
+                CCRELogger.logByLevel(logger, level, prefix + getStateName());
             }
         });
     }

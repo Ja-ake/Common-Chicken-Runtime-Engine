@@ -18,6 +18,7 @@
  */
 package ccre.timers;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.EventInput;
@@ -33,6 +34,7 @@ import ccre.time.Time;
  * @author MillerV, SkeggsC
  */
 public final class Ticker implements EventInput {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     private final EventStatus producer = new EventStatus();
     private final ReporterThread main;
@@ -155,7 +157,7 @@ public final class Ticker implements EventInput {
                     }
                 }
             } catch (Throwable thr) {
-                LoggerFactory.getLogger(this.getClass()).error("Exception in Ticker main loop!", thr);
+                logger.error("Exception in Ticker main loop!", thr);
                 countFails += 10;
             }
         }
