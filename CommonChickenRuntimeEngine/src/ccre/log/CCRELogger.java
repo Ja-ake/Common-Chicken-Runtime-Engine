@@ -533,22 +533,22 @@ public class CCRELogger implements Logger {
     public static void logByLevel(Logger logger, LogLevel level, String message, Throwable throwable) {
         switch (level.id) {
         case LogLevel.FATAL_ID:
-            logger.error("[NET] " + message, throwable);
+            logger.error(message, throwable);
             break;
         case LogLevel.ERROR_ID:
-            logger.error("[NET] " + message, throwable);
+            logger.error(message, throwable);
             break;
         case LogLevel.WARN_ID:
-            logger.warn("[NET] " + message, throwable);
+            logger.warn(message, throwable);
             break;
         case LogLevel.INFO_ID:
-            logger.info("[NET] " + message, throwable);
+            logger.info(message, throwable);
             break;
         case LogLevel.DEBUG_ID:
-            logger.debug("[NET] " + message, throwable);
+            logger.debug(message, throwable);
             break;
         case LogLevel.TRACE_ID:
-            logger.trace("[NET] " + message, throwable);
+            logger.trace(message, throwable);
             break;
         }
     }
@@ -556,22 +556,22 @@ public class CCRELogger implements Logger {
     public static void logByLevel(Logger logger, LogLevel level, String message, String extended) {
         switch (level.id) {
         case LogLevel.FATAL_ID:
-            logger.error("[NET] " + message, extended);
+            logger.error(message, extended);
             break;
         case LogLevel.ERROR_ID:
-            logger.error("[NET] " + message, extended);
+            logger.error(message, extended);
             break;
         case LogLevel.WARN_ID:
-            logger.warn("[NET] " + message, extended);
+            logger.warn(message, extended);
             break;
         case LogLevel.INFO_ID:
-            logger.info("[NET] " + message, extended);
+            logger.info(message, extended);
             break;
         case LogLevel.DEBUG_ID:
-            logger.debug("[NET] " + message, extended);
+            logger.debug(message, extended);
             break;
         case LogLevel.TRACE_ID:
-            logger.trace("[NET] " + message, extended);
+            logger.trace(message, extended);
             break;
         }
     }
@@ -579,22 +579,22 @@ public class CCRELogger implements Logger {
     public static void logByLevel(Logger logger, LogLevel level, String message) {
         switch (level.id) {
         case LogLevel.FATAL_ID:
-            logger.error("[NET] " + message);
+            logger.error(message);
             break;
         case LogLevel.ERROR_ID:
-            logger.error("[NET] " + message);
+            logger.error(message);
             break;
         case LogLevel.WARN_ID:
-            logger.warn("[NET] " + message);
+            logger.warn(message);
             break;
         case LogLevel.INFO_ID:
-            logger.info("[NET] " + message);
+            logger.info(message);
             break;
         case LogLevel.DEBUG_ID:
-            logger.debug("[NET] " + message);
+            logger.debug(message);
             break;
         case LogLevel.TRACE_ID:
-            logger.trace("[NET] " + message);
+            logger.trace(message);
             break;
         }
     }
