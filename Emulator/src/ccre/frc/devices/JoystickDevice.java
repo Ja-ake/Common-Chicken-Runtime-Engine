@@ -18,8 +18,7 @@
  */
 package ccre.frc.devices;
 
-import java.util.logging.Logger;
-
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.BooleanInput;
@@ -42,6 +41,7 @@ import ccre.frc.components.TextComponent;
  * @author skeggsc
  */
 public class JoystickDevice extends DeviceGroup {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     class ExternalJoystickAttachDevice extends Device {
         private final TextComponent status;
@@ -60,7 +60,7 @@ public class JoystickDevice extends DeviceGroup {
                         if (joy == null) {
                             status.setLabel("[UNATTACHED] Hold a Joystick button before clicking.");
                         } else {
-                        	LoggerFactory.getLogger(this.getClass()).info("Attaching joystick: " + joy);
+                        	logger.info("Attaching joystick: " + joy);
                             joystickHolder.setJoystick(joy);
                             status.setLabel("[ATTACHED]: " + joy);
                         }

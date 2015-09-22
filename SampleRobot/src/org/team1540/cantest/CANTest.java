@@ -18,6 +18,7 @@
  */
 package org.team1540.cantest;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.cluck.Cluck;
@@ -34,6 +35,7 @@ import ccre.frc.FRCApplication;
  * @author skeggsc
  */
 public class CANTest implements FRCApplication {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     // WARNING: This has never actually been tested on a real robot.
 
@@ -45,7 +47,7 @@ public class CANTest implements FRCApplication {
             motor.setInternalPID(1, 0.1f, 0.01f);
             Cluck.publish("CAN Jaguar Bus Fault", motor.getDiagnosticChannel(DiagnosticType.BUS_VOLTAGE_FAULT));
         } catch (ExtendedMotorFailureException e) {
-            LoggerFactory.getLogger(this.getClass()).error("Failed to initialize", e);
+            logger.error("Failed to initialize", e);
             throw new RuntimeException();
         }
     }

@@ -27,6 +27,7 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.EventOutput;
@@ -44,6 +45,7 @@ import ccre.supercanvas.SuperCanvasPanel;
  * @author skeggsc
  */
 public class FloatDisplayComponent extends BaseChannelComponent<FloatDisplayComponent.View> implements FloatOutput {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     static enum View {
         HORIZONTAL_POINTER, DIAL, TEXTUAL
@@ -169,7 +171,7 @@ public class FloatDisplayComponent extends BaseChannelComponent<FloatDisplayComp
                             break;
                         }
                     } catch (NumberFormatException ex) {
-                        LoggerFactory.getLogger(this.getClass()).warn("Unexpected failure of number formatting", ex);
+                        logger.warn("Unexpected failure of number formatting", ex);
                         break;
                     }
                     text = nline;

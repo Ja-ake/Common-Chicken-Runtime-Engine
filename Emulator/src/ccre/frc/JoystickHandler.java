@@ -31,6 +31,7 @@ import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.EventInput;
@@ -44,6 +45,8 @@ import ccre.ctrl.IJoystick;
  * @author skeggsc
  */
 public class JoystickHandler {
+    private static Logger logger = LoggerFactory.getLogger(JoystickHandler.class);
+
     static {
         File f;
         try {
@@ -221,7 +224,7 @@ public class JoystickHandler {
         }
 
         private void start() {
-            LoggerFactory.getLogger(this.getClass()).info("Started: " + ctrl + ": " + ctrl.getType());
+            logger.info("Started: " + ctrl + ": " + ctrl.getType());
             axes.clear();
             buttons.clear();
             axes.add(null);
@@ -230,7 +233,7 @@ public class JoystickHandler {
             axes.add(null);
             axes.add(null);
             for (Component comp : ctrl.getComponents()) {
-                LoggerFactory.getLogger(this.getClass()).info("Component: " + comp);
+                logger.info("Component: " + comp);
                 if (comp.getIdentifier() instanceof Component.Identifier.Button) {
                     buttons.add(comp);
                 } else if (comp.getIdentifier() instanceof Component.Identifier.Axis) {
@@ -254,12 +257,12 @@ public class JoystickHandler {
             while (axes.contains(null)) {
                 axes.remove(null);
             }
-            LoggerFactory.getLogger(this.getClass()).info("B/A/P: " + buttons + "/" + axes + "/" + pov);
+            logger.info("B/A/P: " + buttons + "/" + axes + "/" + pov);
             if (isXBox()) {
-                LoggerFactory.getLogger(this.getClass()).info("This is a 5-axis XBOX controller, which means that it's not going to show up the same as on the real robot.");
-                LoggerFactory.getLogger(this.getClass()).info("To resolve this, the emulator will remap the trigger axis into the two separate axes - but it won't work exactly the same.");
-                LoggerFactory.getLogger(this.getClass()).info("Notably, unlike the real robot, we don't know the difference between pressing both axes and pressing neither axes.");
-                LoggerFactory.getLogger(this.getClass()).info("So, it will think that neither are pressed in this scenario.");
+                logger.info("This is a 5-axis XBOX controller, which means that it's not going to show up the same as on the real robot.");
+                logger.info("To resolve this, the emulator will remap the trigger axis into the two separate axes - but it won't work exactly the same.");
+                logger.info("Notably, unlike the real robot, we don't know the difference between pressing both axes and pressing neither axes.");
+                logger.info("So, it will think that neither are pressed in this scenario.");
             }
         }
     }

@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.TreeSet;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.BooleanInput;
@@ -61,6 +62,7 @@ import ccre.util.UniqueIds;
  * @author skeggsc
  */
 public class NetworkPaletteComponent extends PaletteComponent<Collection<NetworkPaletteElement>> {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * Fake RMT number used for merged event channels.
@@ -172,7 +174,7 @@ public class NetworkPaletteComponent extends PaletteComponent<Collection<Network
                 for (NetworkPaletteElement e : entries) {
                     if (e.getName().equals(remote)) {
                         if (e.getType() != remoteType) {
-                            LoggerFactory.getLogger(this.getClass()).warn("Mismatched remote type in search!");
+                            logger.warn("Mismatched remote type in search!");
                         }
                         return;
                     }

@@ -25,6 +25,7 @@ import java.util.Objects;
 
 import javax.swing.JOptionPane;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.EventOutput;
@@ -44,6 +45,7 @@ import ccre.timers.Ticker;
  * @author skeggsc
  */
 public class RConfComponent extends DraggableBoxComponent {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     private final class UpdatingWorker extends CollapsingWorkerThread {
         private UpdatingWorker() {
@@ -276,7 +278,7 @@ public class RConfComponent extends DraggableBoxComponent {
         if (this.onDelete(false)) {
             getPanel().remove(this);
         } else {
-            LoggerFactory.getLogger(this.getClass()).warn("Component deletion disallowed: " + this);
+            logger.warn("Component deletion disallowed: " + this);
         }
         return true;
     }
@@ -358,12 +360,12 @@ public class RConfComponent extends DraggableBoxComponent {
                         if (rawRef != null) {
                             NetworkPaletteComponent comp = getPanel().getAny(NetworkPaletteComponent.class);
                             if (comp == null) {
-                                LoggerFactory.getLogger(this.getClass()).warn("A network palette must be available in order to drag out anything from RConf components!");
+                                logger.warn("A network palette must be available in order to drag out anything from RConf components!");
                             } else {
                                 String ref = path.contains("/") ? path.substring(0, path.lastIndexOf('/') + 1) + rawRef : rawRef;
                                 SuperCanvasComponent nent = comp.getComponentFor(x, y, ref);
                                 if (nent == null) {
-                                    LoggerFactory.getLogger(this.getClass()).warn("No network entry could be found for reference: " + ref);
+                                    logger.warn("No network entry could be found for reference: " + ref);
                                 } else {
                                     getPanel().add(nent);
                                     getPanel().startDrag(nent, x, y);

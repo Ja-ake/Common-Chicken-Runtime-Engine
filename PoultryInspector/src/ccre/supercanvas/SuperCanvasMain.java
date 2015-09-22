@@ -23,6 +23,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.log.FileLogger;
@@ -41,6 +42,7 @@ import ccre.supercanvas.components.pinned.StartComponent;
  * @author skeggsc
  */
 public class SuperCanvasMain extends JFrame {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * The main method of the Poultry Inspector.
@@ -97,7 +99,7 @@ public class SuperCanvasMain extends JFrame {
                         }
                     }
                 } catch (Throwable thr) {
-                    LoggerFactory.getLogger(this.getClass()).error("Exception while handling key press", thr);
+                    logger.error("Exception while handling key press", thr);
                 }
             }
         });

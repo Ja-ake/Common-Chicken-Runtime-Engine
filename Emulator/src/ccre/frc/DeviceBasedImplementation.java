@@ -18,8 +18,7 @@
  */
 package ccre.frc;
 
-import java.util.logging.Logger;
-
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.channel.BooleanInput;
@@ -54,6 +53,7 @@ import ccre.timers.Ticker;
  * @author skeggsc
  */
 public class DeviceBasedImplementation implements FRCImplementation {
+    private Logger _logger = LoggerFactory.getLogger(getClass());
 
     /**
      * The DeviceListPanel used for all the virtual devices.
@@ -415,7 +415,7 @@ public class DeviceBasedImplementation implements FRCImplementation {
             return new LoopbackSerialIO();
         } else {
             panel.add(new HeadingDevice(display + ": Disconnected"));
-            LoggerFactory.getLogger(this.getClass()).warn("Unrecognized serial device name '" + deviceName + "' on " + display + " - not emulating anything.");
+            _logger.warn("Unrecognized serial device name '" + deviceName + "' on " + display + " - not emulating anything.");
             return new DisconnectedSerialIO();
         }
     }
@@ -432,7 +432,7 @@ public class DeviceBasedImplementation implements FRCImplementation {
         case FRC.POWER_CHANNEL_6V:
             return panel.add(new FloatControlDevice("Rail Voltage 6V (0V-7V)", 0.0f, 7.0f, 6.0f, 0.0f)).asInput();
         default:
-            LoggerFactory.getLogger(this.getClass()).warn("Unknown power channel: " + powerChannel);
+            _logger.warn("Unknown power channel: " + powerChannel);
             return FloatInput.always(-1);
         }
     }
@@ -449,7 +449,7 @@ public class DeviceBasedImplementation implements FRCImplementation {
         case FRC.POWER_CHANNEL_6V:
             return panel.add(new FloatControlDevice("Rail Current 6V (0-100A)", 0.0f, 100.0f, 5.0f, 0.0f)).asInput();
         default:
-            LoggerFactory.getLogger(this.getClass()).warn("Unknown power channel: " + powerChannel);
+            _logger.warn("Unknown power channel: " + powerChannel);
             return FloatInput.always(-1);
         }
     }
@@ -466,7 +466,7 @@ public class DeviceBasedImplementation implements FRCImplementation {
         case FRC.POWER_CHANNEL_6V:
             return panel.add(new BooleanControlDevice("Rail Enabled 6V")).asInput();
         default:
-            LoggerFactory.getLogger(this.getClass()).warn("Unknown power channel: " + powerChannel);
+            _logger.warn("Unknown power channel: " + powerChannel);
             return BooleanInput.alwaysFalse;
         }
     }

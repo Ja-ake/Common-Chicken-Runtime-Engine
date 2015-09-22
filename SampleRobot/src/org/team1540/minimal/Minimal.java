@@ -18,6 +18,7 @@
  */
 package org.team1540.minimal;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ccre.frc.FRCApplication;
@@ -28,12 +29,13 @@ import ccre.frc.FRCApplication;
  * @author skeggsc
  */
 public class Minimal implements FRCApplication {
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * Set up the robot. For the minimal robot, this only means printing a
      * message.
      */
     public void setupRobot() {
-        LoggerFactory.getLogger(this.getClass()).info("I live!");
+        logger.info("I live!");
     }
 }
