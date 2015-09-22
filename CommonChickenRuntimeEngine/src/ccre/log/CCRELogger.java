@@ -92,7 +92,7 @@ public class CCRELogger implements Logger {
     
     private String format(String format, Object... args) {
         // TODO: optimize this, right now it's O(format.length * args.length), should be O(format.length)
-        for (Object obj : args) format = format.replaceFirst("{}", obj.toString());
+        for (Object obj : args) format = format.replaceFirst("\\{\\}", obj.toString());
         return format;
     }
         
