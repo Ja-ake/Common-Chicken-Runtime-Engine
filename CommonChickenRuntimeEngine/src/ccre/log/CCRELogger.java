@@ -92,7 +92,18 @@ public class CCRELogger implements Logger {
     
     private String format(String format, Object... args) {
         // TODO: optimize this, right now it's O(format.length * args.length), should be O(format.length)
-        for (Object obj : args) format = format.replaceFirst("\\{\\}", obj.toString());
+    	// Warning: this implementation is /slow/ but we don't care right now because it works :)
+    	
+        for (Object obj : args) {
+        	String tempformat = format.replaceFirst("\\{\\}", obj.toString());
+        	if (tempformat.contentEquals(format)) throw new IllegalArgumentException("Too many arguments: " + args.length + "!");
+        	format = tempformat;
+        }
+        
+        if (format.length() != format.replaceFirst("\\{\\}", "").length()) {
+        	throw new IllegalArgumentException("Too few arguments: " + args.length + "!");
+        }
+        
         return format;
     }
         
