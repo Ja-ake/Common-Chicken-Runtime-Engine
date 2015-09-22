@@ -25,9 +25,10 @@ import java.util.Objects;
 
 import javax.swing.JOptionPane;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.channel.EventOutput;
 import ccre.concurrency.CollapsingWorkerThread;
-import ccre.log.Logger;
 import ccre.rconf.RConf;
 import ccre.rconf.RConfable;
 import ccre.supercanvas.DraggableBoxComponent;
@@ -275,7 +276,7 @@ public class RConfComponent extends DraggableBoxComponent {
         if (this.onDelete(false)) {
             getPanel().remove(this);
         } else {
-            Logger.warning("Component deletion disallowed: " + this);
+            LoggerFactory.getLogger(this.getClass()).warn("Component deletion disallowed: " + this);
         }
         return true;
     }
@@ -357,12 +358,12 @@ public class RConfComponent extends DraggableBoxComponent {
                         if (rawRef != null) {
                             NetworkPaletteComponent comp = getPanel().getAny(NetworkPaletteComponent.class);
                             if (comp == null) {
-                                Logger.warning("A network palette must be available in order to drag out anything from RConf components!");
+                                LoggerFactory.getLogger(this.getClass()).warn("A network palette must be available in order to drag out anything from RConf components!");
                             } else {
                                 String ref = path.contains("/") ? path.substring(0, path.lastIndexOf('/') + 1) + rawRef : rawRef;
                                 SuperCanvasComponent nent = comp.getComponentFor(x, y, ref);
                                 if (nent == null) {
-                                    Logger.warning("No network entry could be found for reference: " + ref);
+                                    LoggerFactory.getLogger(this.getClass()).warn("No network entry could be found for reference: " + ref);
                                 } else {
                                     getPanel().add(nent);
                                     getPanel().startDrag(nent, x, y);

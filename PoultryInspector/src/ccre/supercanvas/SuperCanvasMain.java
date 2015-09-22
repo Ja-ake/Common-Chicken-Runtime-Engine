@@ -23,8 +23,9 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.log.FileLogger;
-import ccre.log.Logger;
 import ccre.log.NetworkAutologger;
 import ccre.net.TrafficCounting;
 import ccre.supercanvas.components.LoggingComponent;
@@ -96,7 +97,7 @@ public class SuperCanvasMain extends JFrame {
                         }
                     }
                 } catch (Throwable thr) {
-                    Logger.severe("Exception while handling key press", thr);
+                    LoggerFactory.getLogger(this.getClass()).error("Exception while handling key press", thr);
                 }
             }
         });

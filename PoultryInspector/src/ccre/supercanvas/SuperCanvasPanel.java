@@ -37,9 +37,10 @@ import java.util.ListIterator;
 
 import javax.swing.JPanel;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.channel.EventOutput;
 import ccre.cluck.Cluck;
-import ccre.log.Logger;
 import ccre.timers.ExpirationTimer;
 
 /**
@@ -166,7 +167,7 @@ public final class SuperCanvasPanel extends JPanel {
                 g.drawString(navail, w / 2 - fontMetrics.stringWidth(navail) / 2, h / 2 - fontMetrics.getHeight() / 2);
             }
         } catch (Throwable thr) {
-            Logger.severe("Exception while handling paint event", thr);
+            LoggerFactory.getLogger(this.getClass()).error("Exception while handling paint event", thr);
         }
     }
 
@@ -346,7 +347,7 @@ public final class SuperCanvasPanel extends JPanel {
                     }
                 }
             } catch (Throwable thr) {
-                Logger.severe("Exception while handling mouse press", thr);
+                LoggerFactory.getLogger(this.getClass()).error("Exception while handling mouse press", thr);
             }
         }
 
@@ -367,7 +368,7 @@ public final class SuperCanvasPanel extends JPanel {
                     activeEntity = null;
                 }
             } catch (Throwable thr) {
-                Logger.severe("Exception while handling mouse release", thr);
+                LoggerFactory.getLogger(this.getClass()).error("Exception while handling mouse release", thr);
             }
         }
 
@@ -386,7 +387,7 @@ public final class SuperCanvasPanel extends JPanel {
                 }
                 repaint();
             } catch (Throwable thr) {
-                Logger.severe("Exception while handling mouse wheel", thr);
+                LoggerFactory.getLogger(this.getClass()).error("Exception while handling mouse wheel", thr);
             }
         }
 
@@ -404,7 +405,7 @@ public final class SuperCanvasPanel extends JPanel {
                 }
                 repaint();
             } catch (Throwable thr) {
-                Logger.severe("Exception while handling mouse drag", thr);
+                LoggerFactory.getLogger(this.getClass()).error("Exception while handling mouse drag", thr);
             }
         }
 
@@ -474,7 +475,7 @@ public final class SuperCanvasPanel extends JPanel {
                     repaint();
                 }
             } catch (Throwable thr) {
-                Logger.severe("Exception while handling mouse move", thr);
+                LoggerFactory.getLogger(this.getClass()).error("Exception while handling mouse move", thr);
             }
         }
     }

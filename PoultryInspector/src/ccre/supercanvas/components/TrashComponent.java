@@ -21,8 +21,10 @@ package ccre.supercanvas.components;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.util.logging.Logger;
 
-import ccre.log.Logger;
+import org.slf4j.LoggerFactory;
+
 import ccre.supercanvas.DraggableBoxComponent;
 import ccre.supercanvas.Rendering;
 import ccre.supercanvas.SuperCanvasComponent;
@@ -51,9 +53,9 @@ public class TrashComponent extends DraggableBoxComponent {
     public boolean onReceiveDrop(int x, int y, SuperCanvasComponent activeEntity) {
         if (activeEntity.onDelete(false)) {
             getPanel().remove(activeEntity);
-            Logger.fine("Deleted component: " + activeEntity);
+            LoggerFactory.getLogger(this.getClass()).debug("Deleted component: " + activeEntity);
         } else {
-            Logger.warning("Component deletion disallowed: " + activeEntity);
+            LoggerFactory.getLogger(this.getClass()).warn("Component deletion disallowed: " + activeEntity);
         }
         return true;
     }

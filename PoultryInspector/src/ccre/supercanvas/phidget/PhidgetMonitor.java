@@ -21,6 +21,16 @@ package ccre.supercanvas.phidget;
 import java.io.Serializable;
 import java.util.Arrays;
 
+import org.slf4j.LoggerFactory;
+
+import ccre.channel.BooleanInput;
+import ccre.channel.BooleanOutput;
+import ccre.channel.BooleanStatus;
+import ccre.channel.FloatInput;
+import ccre.channel.FloatStatus;
+import ccre.cluck.Cluck;
+import ccre.util.LineCollectorOutputStream;
+
 import com.phidgets.InterfaceKitPhidget;
 import com.phidgets.Phidget;
 import com.phidgets.PhidgetException;
@@ -35,15 +45,6 @@ import com.phidgets.event.InputChangeEvent;
 import com.phidgets.event.InputChangeListener;
 import com.phidgets.event.SensorChangeEvent;
 import com.phidgets.event.SensorChangeListener;
-
-import ccre.channel.BooleanInput;
-import ccre.channel.BooleanOutput;
-import ccre.channel.BooleanStatus;
-import ccre.channel.FloatInput;
-import ccre.channel.FloatStatus;
-import ccre.cluck.Cluck;
-import ccre.log.Logger;
-import ccre.util.LineCollectorOutputStream;
 
 /**
  * The interface to the Phidget system. Currently, this has hardcoded constants
@@ -153,7 +154,7 @@ public class PhidgetMonitor implements Serializable, AttachListener, DetachListe
             lcd = new TextLCDPhidget();
             ifa = new InterfaceKitPhidget();
         } catch (PhidgetException ex) {
-            Logger.severe("Could not initialize Phidget!", ex);
+            LoggerFactory.getLogger(this.getClass()).error("Could not initialize Phidget!", ex);
         }
     }
 
@@ -179,7 +180,7 @@ public class PhidgetMonitor implements Serializable, AttachListener, DetachListe
                 lcd.setContrast(100);
             }
         } catch (PhidgetException ex) {
-            Logger.severe("Could not initialize Phidget!", ex);
+            LoggerFactory.getLogger(this.getClass()).error("Could not initialize Phidget!", ex);
         }
         for (int i = 0; i < OUTPUT_COUNT; i++) {
             Cluck.publish("phidget-bo" + i, outputs[i]);
@@ -241,9 +242,9 @@ public class PhidgetMonitor implements Serializable, AttachListener, DetachListe
             }
         } catch (PhidgetException ex) {
             if (ex.getErrorNumber() == PhidgetException.EPHIDGET_NOTATTACHED) {
-                Logger.warning("Phidget not attached!");
+                LoggerFactory.getLogger(this.getClass()).warn("Phidget not attached!");
             } else {
-                Logger.severe("Cannot update string output to Phidget: " + ex);
+                LoggerFactory.getLogger(this.getClass()).error("Cannot update string output to Phidget: " + ex);
             }
         }
     }
@@ -252,7 +253,7 @@ public class PhidgetMonitor implements Serializable, AttachListener, DetachListe
         try {
             ifa.setOutputState(cur, outvals[cur]);
         } catch (PhidgetException ex) {
-            Logger.severe("Cannot update boolean output to Phidget: " + ex);
+            LoggerFactory.getLogger(this.getClass()).error("Cannot update boolean output to Phidget: " + ex);
         }
     }
 
@@ -268,26 +269,26 @@ public class PhidgetMonitor implements Serializable, AttachListener, DetachListe
             try {
                 onAttachLCD();
             } catch (PhidgetException ex) {
-                Logger.severe("Error on LCD attach", ex);
+                LoggerFactory.getLogger(this.getClass()).error("Error on LCD attach", ex);
             }
         } else if (p == ifa) {
             try {
                 onAttachInterface();
             } catch (PhidgetException ex) {
-                Logger.severe("Error on Interface attach: " + ex);
+                LoggerFactory.getLogger(this.getClass()).error("Error on Interface attach: " + ex);
             }
         } else {
-            Logger.warning("Attach of unknown phidget!");
+            LoggerFactory.getLogger(this.getClass()).warn("Attach of unknown phidget!");
         }
         recalculateAttached();
     }
 
     private void onAttachInterface() throws PhidgetException {
         if (ifa.getInputCount() != INPUT_COUNT) {
-            Logger.severe("Interface input count mismatch: " + ifa.getInputCount() + " instead of " + INPUT_COUNT);
+            LoggerFactory.getLogger(this.getClass()).error("Interface input count mismatch: " + ifa.getInputCount() + " instead of " + INPUT_COUNT);
         }
         if (ifa.getSensorCount() != ANALOG_COUNT) {
-            Logger.severe("Interface analog count mismatch: " + ifa.getSensorCount() + " instead of " + ANALOG_COUNT);
+            LoggerFactory.getLogger(this.getClass()).error("Interface analog count mismatch: " + ifa.getSensorCount() + " instead of " + ANALOG_COUNT);
         }
         for (int i = 0; i < OUTPUT_COUNT; i++) {
             updateBooleanOutput(i);
@@ -298,7 +299,7 @@ public class PhidgetMonitor implements Serializable, AttachListener, DetachListe
         for (int i = 0; i < ANALOG_COUNT; i++) {
             float moved = (ifa.getSensorValue(i) - 500) / 500.0f;
             if (moved < -1 || moved > 1) {
-                Logger.warning("Sensor out of range: " + moved);
+                LoggerFactory.getLogger(this.getClass()).warn("Sensor out of range: " + moved);
             }
             analogs[i].set(moved);
         }
@@ -306,10 +307,10 @@ public class PhidgetMonitor implements Serializable, AttachListener, DetachListe
 
     private void onAttachLCD() throws PhidgetException {
         if (lcd.getColumnCount() != LCD_WIDTH) {
-            Logger.severe("LCD column count mismatch: " + lcd.getColumnCount() + " instead of " + LCD_WIDTH);
+            LoggerFactory.getLogger(this.getClass()).error("LCD column count mismatch: " + lcd.getColumnCount() + " instead of " + LCD_WIDTH);
         }
         if (lcd.getRowCount() != LCD_LINES) {
-            Logger.severe("LCD row count mismatch: " + lcd.getRowCount() + " instead of " + LCD_LINES);
+            LoggerFactory.getLogger(this.getClass()).error("LCD row count mismatch: " + lcd.getRowCount() + " instead of " + LCD_LINES);
         }
         lcd.setBacklight(true);
         lcd.setContrast(100);
@@ -332,7 +333,7 @@ public class PhidgetMonitor implements Serializable, AttachListener, DetachListe
         try {
             attachStat.set(lcd.isAttached() && ifa.isAttached());
         } catch (PhidgetException ex) {
-            Logger.warning("Could not recalculate attachment status: " + ex);
+            LoggerFactory.getLogger(this.getClass()).warn("Could not recalculate attachment status: " + ex);
         }
     }
 
@@ -357,7 +358,7 @@ public class PhidgetMonitor implements Serializable, AttachListener, DetachListe
         // val: 0 to 1000, val-500: -500 to 500, (val-500)/500.0f: -1f to 1f
         float moved = (val - 500) / 500.0f;
         if (moved < -1 || moved > 1) {
-            Logger.warning("Sensor out of range: " + moved);
+            LoggerFactory.getLogger(this.getClass()).warn("Sensor out of range: " + moved);
         }
         analogs[ae.getIndex()].set(moved);
     }
@@ -369,7 +370,7 @@ public class PhidgetMonitor implements Serializable, AttachListener, DetachListe
      */
     @Override
     public void error(ErrorEvent ae) {
-        Logger.severe("Phidget Reported Error: " + ae);
+        LoggerFactory.getLogger(this.getClass()).error("Phidget Reported Error: " + ae);
     }
 
     private Object writeReplace() {

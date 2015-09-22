@@ -18,14 +18,15 @@
  */
 package org.team1540.cantest;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.cluck.Cluck;
 import ccre.ctrl.ExtendedMotor;
 import ccre.ctrl.ExtendedMotor.DiagnosticType;
 import ccre.ctrl.ExtendedMotor.OutputControlMode;
+import ccre.ctrl.ExtendedMotorFailureException;
 import ccre.frc.FRC;
 import ccre.frc.FRCApplication;
-import ccre.ctrl.ExtendedMotorFailureException;
-import ccre.log.Logger;
 
 /**
  * A simple test program that will allow testing control of a CAN Jaguar.
@@ -44,7 +45,7 @@ public class CANTest implements FRCApplication {
             motor.setInternalPID(1, 0.1f, 0.01f);
             Cluck.publish("CAN Jaguar Bus Fault", motor.getDiagnosticChannel(DiagnosticType.BUS_VOLTAGE_FAULT));
         } catch (ExtendedMotorFailureException e) {
-            Logger.severe("Failed to initialize", e);
+            LoggerFactory.getLogger(this.getClass()).error("Failed to initialize", e);
             throw new RuntimeException();
         }
     }

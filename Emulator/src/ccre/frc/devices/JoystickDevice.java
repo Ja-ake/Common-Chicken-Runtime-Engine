@@ -18,6 +18,10 @@
  */
 package ccre.frc.devices;
 
+import java.util.logging.Logger;
+
+import org.slf4j.LoggerFactory;
+
 import ccre.channel.BooleanInput;
 import ccre.channel.EventInput;
 import ccre.channel.FloatInput;
@@ -30,7 +34,6 @@ import ccre.frc.JoystickHandler;
 import ccre.frc.JoystickHandler.ExternalJoystickHolder;
 import ccre.frc.components.SpacingComponent;
 import ccre.frc.components.TextComponent;
-import ccre.log.Logger;
 
 /**
  * A device representing a Joystick. This will have buttons and axes added
@@ -57,7 +60,7 @@ public class JoystickDevice extends DeviceGroup {
                         if (joy == null) {
                             status.setLabel("[UNATTACHED] Hold a Joystick button before clicking.");
                         } else {
-                            Logger.info("Attaching joystick: " + joy);
+                        	LoggerFactory.getLogger(this.getClass()).info("Attaching joystick: " + joy);
                             joystickHolder.setJoystick(joy);
                             status.setLabel("[ATTACHED]: " + joy);
                         }

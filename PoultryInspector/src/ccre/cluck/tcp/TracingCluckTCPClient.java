@@ -23,11 +23,13 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.util.logging.Logger;
+
+import org.slf4j.LoggerFactory;
 
 import ccre.cluck.CluckLink;
 import ccre.cluck.CluckNode;
 import ccre.drivers.ByteFiddling;
-import ccre.log.Logger;
 import ccre.net.ClientSocket;
 
 /**
@@ -60,11 +62,11 @@ public class TracingCluckTCPClient extends CluckTCPClient {
         @Override
         public boolean send(String dest, String source, byte[] data) {
             if (data.length == 0) {
-                Logger.finest("[LOCAL] SEND " + source + " -> " + dest + ": EMPTY");
+                LoggerFactory.getLogger(this.getClass()).trace("[LOCAL] SEND " + source + " -> " + dest + ": EMPTY");
             } else if (data.length == 1) {
-                Logger.finest("[LOCAL] SEND " + source + " -> " + dest + ": " + CluckNode.rmtToString(data[0]));
+                LoggerFactory.getLogger(this.getClass()).trace("[LOCAL] SEND " + source + " -> " + dest + ": " + CluckNode.rmtToString(data[0]));
             } else {
-                Logger.finest("[LOCAL] SEND " + source + " -> " + dest + ": " + CluckNode.rmtToString(data[0]) + " <" + ByteFiddling.toHex(data, 1, data.length) + ">");
+                LoggerFactory.getLogger(this.getClass()).trace("[LOCAL] SEND " + source + " -> " + dest + ": " + CluckNode.rmtToString(data[0]) + " <" + ByteFiddling.toHex(data, 1, data.length) + ">");
             }
             return link.send(dest, source, data);
         }
@@ -88,7 +90,7 @@ public class TracingCluckTCPClient extends CluckTCPClient {
     @Override
     protected CluckLink doStart(DataInputStream din, DataOutputStream dout, ClientSocket sock) throws IOException {
         CluckProtocol.handleHeader(din, dout, remoteNameHint);
-        Logger.fine("Connected to " + getRemote() + " at " + System.currentTimeMillis());
+        LoggerFactory.getLogger(this.getClass()).debug("Connected to " + getRemote() + " at " + System.currentTimeMillis());
         CluckProtocol.setTimeoutOnSocket(sock);
         CluckLink link = CluckProtocol.handleSend(dout, linkName, node);
         link = new TracingLink(link);
@@ -114,7 +116,7 @@ public class TracingCluckTCPClient extends CluckTCPClient {
                     }
                     if (!expectKeepAlives && "KEEPALIVE".equals(dest) && source == null && data.length >= 2 && data[0] == CluckNode.RMT_NEGATIVE_ACK && data[1] == 0x6D) {
                         expectKeepAlives = true;
-                        Logger.info("Detected KEEPALIVE message. Expecting future keepalives on " + linkName + ".");
+                        LoggerFactory.getLogger(this.getClass()).info("Detected KEEPALIVE message. Expecting future keepalives on " + linkName + ".");
                     }
                     source = CluckProtocol.prependLink(linkName, source);
                     long start = System.currentTimeMillis();
@@ -122,7 +124,7 @@ public class TracingCluckTCPClient extends CluckTCPClient {
                     node.transmit(dest, source, data, denyLink);
                     long endAt = System.currentTimeMillis();
                     if (endAt - start > 1000) {
-                        Logger.warning("[LOCAL] Took a long time to process: " + dest + " <- " + source + " of " + (endAt - start) + " ms");
+                        LoggerFactory.getLogger(this.getClass()).warn("[LOCAL] Took a long time to process: " + dest + " <- " + source + " of " + (endAt - start) + " ms");
                     }
                     lastReceive = System.currentTimeMillis();
                 } catch (SocketTimeoutException ex) {
@@ -134,10 +136,10 @@ public class TracingCluckTCPClient extends CluckTCPClient {
                 }
             }
         } catch (SocketTimeoutException ex) {
-            Logger.fine("Link timed out: " + linkName);
+            LoggerFactory.getLogger(this.getClass()).debug("Link timed out: " + linkName);
         } catch (SocketException ex) {
             if ("Connection reset".equals(ex.getMessage())) {
-                Logger.fine("Link receiving disconnected: " + linkName);
+                LoggerFactory.getLogger(this.getClass()).debug("Link receiving disconnected: " + linkName);
             } else {
                 throw ex;
             }
@@ -146,12 +148,12 @@ public class TracingCluckTCPClient extends CluckTCPClient {
 
     private void logLocal(String dest, String source, byte[] data) {
         if (data.length == 0) {
-            Logger.finest("[LOCAL] RECV " + source + " -> " + dest + ": EMPTY");
+            LoggerFactory.getLogger(this.getClass()).trace("[LOCAL] RECV " + source + " -> " + dest + ": EMPTY");
         } else if (data.length == 1) {
-            Logger.finest("[LOCAL] RECV " + source + " -> " + dest + ": " + CluckNode.rmtToString(data[0]));
+            LoggerFactory.getLogger(this.getClass()).trace("[LOCAL] RECV " + source + " -> " + dest + ": " + CluckNode.rmtToString(data[0]));
         } else if (!dest.equals("KEEPALIVE")) {
-            Logger.finest("[LOCAL] RECV: " + data.length);
-            Logger.finest("[LOCAL] RECV " + source + " -> " + dest + ": " + CluckNode.rmtToString(data[0]) + " <" + ByteFiddling.toHex(data, 1, data.length) + ">");
+            LoggerFactory.getLogger(this.getClass()).trace("[LOCAL] RECV: " + data.length);
+            LoggerFactory.getLogger(this.getClass()).trace("[LOCAL] RECV " + source + " -> " + dest + ": " + CluckNode.rmtToString(data[0]) + " <" + ByteFiddling.toHex(data, 1, data.length) + ">");
         }
     }
 }

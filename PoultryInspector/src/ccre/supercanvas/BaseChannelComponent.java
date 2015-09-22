@@ -22,10 +22,11 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 
-import ccre.log.Logger;
+import org.slf4j.LoggerFactory;
+
 import ccre.rconf.RConf;
-import ccre.rconf.RConfable;
 import ccre.rconf.RConf.Entry;
+import ccre.rconf.RConfable;
 import ccre.supercanvas.components.channels.RConfComponent;
 
 /**
@@ -95,7 +96,7 @@ public abstract class BaseChannelComponent<View extends Enum<View>> extends Drag
                 if (this.onDelete(false)) {
                     getPanel().remove(this);
                 } else {
-                    Logger.warning("Component deletion disallowed: " + this);
+                    LoggerFactory.getLogger(this.getClass()).warn("Component deletion disallowed: " + this);
                 }
                 return true;
             }

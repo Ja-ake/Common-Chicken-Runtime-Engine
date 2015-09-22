@@ -33,8 +33,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JPanel;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.channel.EventOutput;
-import ccre.log.Logger;
 import ccre.timers.ExpirationTimer;
 import ccre.util.Utils;
 
@@ -194,7 +195,7 @@ public final class DeviceListPanel extends JPanel implements Iterable<Device> {
                 }
             }
         } catch (Throwable thr) {
-            Logger.severe("Exception while handling paint event", thr);
+            LoggerFactory.getLogger(this.getClass()).error("Exception while handling paint event", thr);
         }
     }
 
@@ -293,7 +294,7 @@ public final class DeviceListPanel extends JPanel implements Iterable<Device> {
                     yPosition -= deviceHeight;
                 }
             } catch (Throwable thr) {
-                Logger.severe("Exception while handling mouse press", thr);
+                LoggerFactory.getLogger(this.getClass()).error("Exception while handling mouse press", thr);
             }
         }
 
@@ -327,7 +328,7 @@ public final class DeviceListPanel extends JPanel implements Iterable<Device> {
                     yPosition -= deviceHeight;
                 }
             } catch (Throwable thr) {
-                Logger.severe("Exception while handling mouse release", thr);
+                LoggerFactory.getLogger(this.getClass()).error("Exception while handling mouse release", thr);
             }
         }
 
@@ -337,7 +338,7 @@ public final class DeviceListPanel extends JPanel implements Iterable<Device> {
                 scrollPos += e.getWheelRotation();
                 repaint();
             } catch (Throwable thr) {
-                Logger.severe("Exception while handling mouse wheel", thr);
+                LoggerFactory.getLogger(this.getClass()).error("Exception while handling mouse wheel", thr);
             }
         }
 
@@ -388,7 +389,7 @@ public final class DeviceListPanel extends JPanel implements Iterable<Device> {
                     oldYPosition -= deviceHeight;
                 }
             } catch (Throwable thr) {
-                Logger.severe("Exception while handling mouse move", thr);
+                LoggerFactory.getLogger(this.getClass()).error("Exception while handling mouse move", thr);
             }
         }
     }

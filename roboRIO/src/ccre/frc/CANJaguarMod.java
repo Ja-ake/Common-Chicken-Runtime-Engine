@@ -10,7 +10,8 @@ package ccre.frc;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import ccre.log.Logger;
+import org.slf4j.LoggerFactory;
+
 import edu.wpi.first.wpilibj.can.CANExceptionFactory;
 import edu.wpi.first.wpilibj.can.CANJNI;
 import edu.wpi.first.wpilibj.can.CANMessageNotFoundException;
@@ -239,9 +240,9 @@ class CANJaguarMod {
 
         // 3330 was the first shipping RDK firmware version for the Jaguar
         if (m_firmwareVersion < 108) {
-            Logger.warning("CAN Jaguar " + m_deviceNumber + " firmware " + m_firmwareVersion + " is too old (must be at least version 108 of the FIRST approved firmware)");
+            LoggerFactory.getLogger(this.getClass()).warn("CAN Jaguar " + m_deviceNumber + " firmware " + m_firmwareVersion + " is too old (must be at least version 108 of the FIRST approved firmware)");
         } else if (m_firmwareVersion >= 3330) {
-            Logger.warning("CAN Jaguar " + m_deviceNumber + " firmware " + m_firmwareVersion + " is not FIRST approved (must be at least version 108 of the FIRST approved firmware)");
+            LoggerFactory.getLogger(this.getClass()).warn("CAN Jaguar " + m_deviceNumber + " firmware " + m_firmwareVersion + " is not FIRST approved (must be at least version 108 of the FIRST approved firmware)");
         }
     }
 

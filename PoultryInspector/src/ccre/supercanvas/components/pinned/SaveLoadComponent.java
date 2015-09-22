@@ -32,7 +32,8 @@ import java.io.ObjectOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import ccre.log.Logger;
+import org.slf4j.LoggerFactory;
+
 import ccre.supercanvas.Rendering;
 import ccre.supercanvas.SuperCanvasComponent;
 
@@ -80,20 +81,20 @@ public class SaveLoadComponent extends SuperCanvasComponent {
     @Override
     public boolean onInteract(int tx, int ty) {
         if (ty < btnBorder) {
-            Logger.info("Saving...");
+            LoggerFactory.getLogger(this.getClass()).info("Saving...");
             try {
                 saveLayout();
             } catch (IOException ex) {
-                Logger.severe("Could not save!", ex);
+                LoggerFactory.getLogger(this.getClass()).error("Could not save!", ex);
             }
         } else {
-            Logger.info("Loading...");
+            LoggerFactory.getLogger(this.getClass()).info("Loading...");
             try {
                 loadLayout();
             } catch (ClassNotFoundException ex) {
-                Logger.severe("Could not load!", ex);
+                LoggerFactory.getLogger(this.getClass()).error("Could not load!", ex);
             } catch (IOException ex) {
-                Logger.severe("Could not load!", ex);
+                LoggerFactory.getLogger(this.getClass()).error("Could not load!", ex);
             }
         }
         return true;
@@ -120,9 +121,9 @@ public class SaveLoadComponent extends SuperCanvasComponent {
             } finally {
                 out.close();
             }
-            Logger.info("Saved as " + file + ".");
+            LoggerFactory.getLogger(this.getClass()).info("Saved as " + file + ".");
         } else {
-            Logger.info("Cancelled by user.");
+            LoggerFactory.getLogger(this.getClass()).info("Cancelled by user.");
         }
     }
 
@@ -135,9 +136,9 @@ public class SaveLoadComponent extends SuperCanvasComponent {
             } finally {
                 in.close();
             }
-            Logger.info("Loaded from " + chooser.getSelectedFile() + ".");
+            LoggerFactory.getLogger(this.getClass()).info("Loaded from " + chooser.getSelectedFile() + ".");
         } else {
-            Logger.info("Cancelled by user.");
+            LoggerFactory.getLogger(this.getClass()).info("Cancelled by user.");
         }
     }
 

@@ -27,10 +27,11 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.channel.EventOutput;
 import ccre.channel.FloatInput;
 import ccre.channel.FloatOutput;
-import ccre.log.Logger;
 import ccre.rconf.RConf;
 import ccre.rconf.RConf.Entry;
 import ccre.supercanvas.BaseChannelComponent;
@@ -168,7 +169,7 @@ public class FloatDisplayComponent extends BaseChannelComponent<FloatDisplayComp
                             break;
                         }
                     } catch (NumberFormatException ex) {
-                        Logger.warning("Unexpected failure of number formatting", ex);
+                        LoggerFactory.getLogger(this.getClass()).warn("Unexpected failure of number formatting", ex);
                         break;
                     }
                     text = nline;

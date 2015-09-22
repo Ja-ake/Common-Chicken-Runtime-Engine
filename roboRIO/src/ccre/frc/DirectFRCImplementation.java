@@ -29,6 +29,9 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Enumeration;
 import java.util.jar.Manifest;
+import java.util.logging.Logger;
+
+import org.slf4j.LoggerFactory;
 
 import ccre.channel.BooleanInput;
 import ccre.channel.BooleanOutput;
@@ -48,7 +51,6 @@ import ccre.ctrl.ExtendedMotorFailureException;
 import ccre.ctrl.IJoystick;
 import ccre.ctrl.binding.ControlBindingCreator;
 import ccre.log.FileLogger;
-import ccre.log.Logger;
 import ccre.log.NetworkAutologger;
 import ccre.storage.Storage;
 import ccre.util.Version;
@@ -82,15 +84,15 @@ public final class DirectFRCImplementation implements FRCImplementation {
                 output.write(("CCRE " + Version.getShortVersion() + ": 2015 Java 1.0.0").getBytes());
             }
         } catch (IOException ex) {
-            Logger.warning("Could not write version file", ex);
+            LoggerFactory.getLogger(DirectFRCImplementation.class).warn("Could not write version file", ex);
         }
 
         try {
             runMain();
-            Logger.severe("Robots don't quit!");
+            LoggerFactory.getLogger(DirectFRCImplementation.class).error("Robots don't quit!");
         } catch (Throwable t) {
             t.printStackTrace();
-            Logger.severe("Uncaught exception!", t);
+            LoggerFactory.getLogger(DirectFRCImplementation.class).error("Uncaught exception!", t);
         }
         System.exit(1);
     }
@@ -106,7 +108,7 @@ public final class DirectFRCImplementation implements FRCImplementation {
             robot.setupMain();
             Cluck.getNode().notifyNetworkModified();
         } catch (Throwable thr) {
-            Logger.severe("Critical Code Failure in Robot Init", thr);
+            LoggerFactory.getLogger(DirectFRCImplementation.class).error("Critical Code Failure in Robot Init", thr);
             return;
         }
 
@@ -148,7 +150,7 @@ public final class DirectFRCImplementation implements FRCImplementation {
             try {
                 DirectDriverStation.waitForData();
             } catch (InterruptedException e) {
-                Logger.warning("Core thread interrupted... ignoring.", e);
+                LoggerFactory.getLogger(this.getClass()).warn("Core thread interrupted... ignoring.", e);
             }
         }
     }
@@ -193,7 +195,7 @@ public final class DirectFRCImplementation implements FRCImplementation {
         FRCNetworkCommunicationsLibrary.FRCNetworkCommunicationUsageReportingReport((byte) tResourceType.kResourceType_Language, (byte) tInstances.kLanguage_Java, (byte) 0, "With the CCRE: the CommonChickenRuntimeEngine");
         File rootDir = new File("/home/lvuser/ccre-storage");
         if (!rootDir.exists() && !rootDir.mkdirs()) {
-            Logger.warning("Could not create rootDir! Something might break...");
+            LoggerFactory.getLogger(this.getClass()).warn("Could not create rootDir! Something might break...");
         }
         Storage.setBaseDir(rootDir);
         NetworkAutologger.register();
@@ -219,11 +221,11 @@ public final class DirectFRCImplementation implements FRCImplementation {
 
         private void start(DirectFRCImplementation impl, boolean onFMS) {
             try {
-                Logger.fine("Began " + name + (onFMS ? " on FMS" : " mode"));
+                LoggerFactory.getLogger(this.getClass()).debug("Began " + name + (onFMS ? " on FMS" : " mode"));
                 impl.onChangeMode.produce();
                 getStart(impl).produce();
             } catch (Throwable thr) {
-                Logger.severe("Critical Code Failure in " + name + " init", thr);
+                LoggerFactory.getLogger(this.getClass()).error("Critical Code Failure in " + name + " init", thr);
             }
         }
 
@@ -245,7 +247,7 @@ public final class DirectFRCImplementation implements FRCImplementation {
                     }
                 }
             } catch (Throwable thr) {
-                Logger.severe("Critical Code Failure in " + name + " periodic", thr);
+                LoggerFactory.getLogger(this.getClass()).error("Critical Code Failure in " + name + " periodic", thr);
                 countFails += 10;
             }
         }
@@ -273,10 +275,10 @@ public final class DirectFRCImplementation implements FRCImplementation {
         if (name == null) {
             throw new RuntimeException("Could not find MANIFEST-specified launchee!");
         }
-        Logger.info("Starting application: " + name);
+        LoggerFactory.getLogger(this.getClass()).info("Starting application: " + name);
         ((FRCApplication) Class.forName(name).newInstance()).setupRobot();
         onInitComplete.event();
-        Logger.info("Hello, " + name + "!");
+        LoggerFactory.getLogger(this.getClass()).info("Hello, " + name + "!");
     }
 
     @Override
@@ -615,7 +617,7 @@ public final class DirectFRCImplementation implements FRCImplementation {
             Thread.currentThread().interrupt();
             throw new RuntimeException("Interrupted during CAN Jaguar initialization");
         } catch (ExtendedMotorFailureException ex) {
-            Logger.severe("Could not connect to CAN Jaguar " + deviceNumber, ex);
+            LoggerFactory.getLogger(this.getClass()).error("Could not connect to CAN Jaguar " + deviceNumber, ex);
             return new CommunicationFailureExtendedMotor("Could not connect to CAN Jaguar " + deviceNumber);
         }
     }
@@ -625,7 +627,7 @@ public final class DirectFRCImplementation implements FRCImplementation {
         try {
             return new ExtendedTalonDirect(deviceNumber);
         } catch (ExtendedMotorFailureException e) {
-            Logger.severe("Could not connect to CAN Talon " + deviceNumber, e);
+            LoggerFactory.getLogger(this.getClass()).error("Could not connect to CAN Talon " + deviceNumber, e);
             return new CommunicationFailureExtendedMotor("Could not connect to CAN Talon " + deviceNumber);
         }
     }
@@ -633,7 +635,7 @@ public final class DirectFRCImplementation implements FRCImplementation {
     @Override
     public FloatInput getChannelVoltage(int powerChannel, EventInput updateOn) {
         if (DirectPower.readChannelVoltage(powerChannel) == -1) {
-            Logger.warning("Unknown power channel: " + powerChannel);
+            LoggerFactory.getLogger(this.getClass()).warn("Unknown power channel: " + powerChannel);
         }
         return new DerivedFloatInput(updateOn) {
             @Override
@@ -646,7 +648,7 @@ public final class DirectFRCImplementation implements FRCImplementation {
     @Override
     public FloatInput getChannelCurrent(int powerChannel, EventInput updateOn) {
         if (DirectPower.readChannelCurrent(powerChannel) == -1) {
-            Logger.warning("Unknown power channel: " + powerChannel);
+            LoggerFactory.getLogger(this.getClass()).warn("Unknown power channel: " + powerChannel);
         }
         return new DerivedFloatInput(updateOn) {
             @Override

@@ -26,10 +26,11 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.io.Serializable;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.channel.EventOutput;
 import ccre.channel.FloatInput;
 import ccre.channel.FloatOutput;
-import ccre.log.Logger;
 import ccre.rconf.RConf;
 import ccre.rconf.RConf.Entry;
 import ccre.supercanvas.BaseChannelComponent;
@@ -228,7 +229,7 @@ public class FloatControlComponent extends BaseChannelComponent<FloatControlComp
                 setDele(false, Float.parseFloat(activeBuffer.toString()));
                 getPanel().editing = null;
             } catch (NumberFormatException ex) {
-                Logger.warning("Could not parse number '" + activeBuffer + "'.");
+                LoggerFactory.getLogger(this.getClass()).warn("Could not parse number '" + activeBuffer + "'.");
             }
         }
     }

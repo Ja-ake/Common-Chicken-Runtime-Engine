@@ -22,9 +22,11 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.logging.Logger;
+
+import org.slf4j.LoggerFactory;
 
 import ccre.cluck.Cluck;
-import ccre.log.Logger;
 import ccre.rconf.RConf;
 import ccre.rconf.RConf.Entry;
 import ccre.rconf.RConfable;
@@ -157,7 +159,7 @@ public class TopLevelRConfComponent extends RConfComponent {
                     f.setAccessible(true);
                     return f.get(target);
                 } catch (IllegalAccessException e) {
-                    Logger.warning("Could not access field " + f, e);
+                    LoggerFactory.getLogger(this.getClass()).warn("Could not access field " + f, e);
                 }
             }
             return null;
@@ -175,9 +177,9 @@ public class TopLevelRConfComponent extends RConfComponent {
 
         public boolean signalRConf(int field, byte[] data) throws InterruptedException {
             if (field == 1) {
-                Logger.fine("Notifying...");
+                LoggerFactory.getLogger(this.getClass()).debug("Notifying...");
                 Cluck.getNode().notifyNetworkModified();
-                Logger.fine("Notified!");
+                LoggerFactory.getLogger(this.getClass()).debug("Notified!");
                 return true;
             } else if (field == 2) {
                 master.addInspection(master.getPanel());

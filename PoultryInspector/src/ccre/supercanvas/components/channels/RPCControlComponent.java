@@ -25,8 +25,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 
+import org.slf4j.LoggerFactory;
+
 import ccre.cluck.rpc.RemoteProcedure;
-import ccre.log.Logger;
 import ccre.supercanvas.DraggableBoxComponent;
 import ccre.supercanvas.Rendering;
 
@@ -165,12 +166,12 @@ public class RPCControlComponent extends DraggableBoxComponent {
         for (int i = 0; i < decoded.length; i++) {
             int a = decodeHexDigit(contents.charAt(i * 2)), b = decodeHexDigit(contents.charAt(i * 2 + 1));
             if (a == -1 || b == -1) {
-                Logger.warning("Undiscovered bad hex digit in sendable.");
+                LoggerFactory.getLogger(this.getClass()).warn("Undiscovered bad hex digit in sendable.");
             } else {
                 decoded[i] = (byte) ((a << 4) | b);
             }
         }
-        Logger.info("Decoded " + decoded.length + " bytes.");
+        LoggerFactory.getLogger(this.getClass()).info("Decoded " + decoded.length + " bytes.");
         return decoded;
     }
 
