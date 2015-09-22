@@ -131,7 +131,7 @@ public class PauseTimer implements BooleanInput, EventOutput {
             try {
                 c.event();
             } catch (Throwable thr) {
-            	LoggerFactory.getLogger(this.getClass()).error("Exception in PauseTimer dispatch!", thr);
+                LoggerFactory.getLogger(this.getClass()).error("Exception in PauseTimer dispatch!", thr);
             }
         }
     }
@@ -164,7 +164,7 @@ public class PauseTimer implements BooleanInput, EventOutput {
     public void triggerAtChanges(EventOutput start, EventOutput end) {
         send(BooleanOutput.onChange(end, start));
     }
-    
+
     public void onUpdate(EventOutput notify) {
         consumers.add(notify);
     }

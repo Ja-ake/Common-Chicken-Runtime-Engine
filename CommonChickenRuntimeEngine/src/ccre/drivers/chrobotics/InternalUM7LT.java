@@ -178,14 +178,19 @@ public class InternalUM7LT { // default rate: 115200 baud.
         while (count-- > 0) {
             int consumed = handlePacket(activeBuffer, from, to);
             if (consumed == 0) { // need more data
-                if (from != 0 && to >= activeBuffer.length - 64) { // nearing the end, or at the end - shift earlier.
+                if (from != 0 && to >= activeBuffer.length - 64) { // nearing
+                                                                   // the end,
+                                                                   // or at the
+                                                                   // end -
+                                                                   // shift
+                                                                   // earlier.
                     System.arraycopy(activeBuffer, from, activeBuffer, 0, to - from);
                     to -= from;
                     from = 0;
                 }
                 if (activeBuffer.length == to) {
                     // still no matched packet...?
-                	LoggerFactory.getLogger(this.getClass()).warn("RS232 input buffer overflow, somehow? Resetting buffer.");
+                    LoggerFactory.getLogger(this.getClass()).warn("RS232 input buffer overflow, somehow? Resetting buffer.");
                     from = to = 0;
                 }
                 byte[] gotten = rs232.readBlocking(activeBuffer.length - to);
@@ -203,7 +208,8 @@ public class InternalUM7LT { // default rate: 115200 baud.
         }
     }
 
-    // Returns the number of consumed bytes, or zero if packet needs more data to be valid.
+    // Returns the number of consumed bytes, or zero if packet needs more data
+    // to be valid.
     private int handlePacket(byte[] bytes, int from, int to) {
         // TODO: Check bounds on To.
         if (to - from < 6) { // no way for any valid packets to be ready
@@ -226,24 +232,25 @@ public class InternalUM7LT { // default rate: 115200 baud.
                 throw new IOException("Invalid packet that starts with bytes " + ByteFiddling.toHex(bytes, from, Math.min(to, from + 8)));
             }
         } catch (IOException ex) {
-        	LoggerFactory.getLogger(this.getClass()).warn("UM7 message handling failed - attempting to reset state", ex);
+            LoggerFactory.getLogger(this.getClass()).warn("UM7 message handling failed - attempting to reset state", ex);
         }
         incorrectPackets++;
         int possibleStartNMEA = ByteFiddling.indexOf(bytes, from + 1, to, (byte) '$');
         int possibleStartBinary = ByteFiddling.indexOf(bytes, from + 1, to, (byte) 's');
         if (possibleStartBinary != -1 && (possibleStartNMEA == -1 || possibleStartBinary < possibleStartNMEA)) {
-        	LoggerFactory.getLogger(this.getClass()).debug("Skipping " + (possibleStartBinary - from) + " bytes to Binary.");
+            LoggerFactory.getLogger(this.getClass()).debug("Skipping " + (possibleStartBinary - from) + " bytes to Binary.");
             return possibleStartBinary - from; // skip until the start
         } else if (possibleStartNMEA != -1 && !treatNMEAAsErroneous) {
-        	LoggerFactory.getLogger(this.getClass()).debug("Skipping " + (possibleStartNMEA - from) + " bytes to NMEA.");
+            LoggerFactory.getLogger(this.getClass()).debug("Skipping " + (possibleStartNMEA - from) + " bytes to NMEA.");
             return possibleStartNMEA - from; // skip until the start
         } else {
-        	LoggerFactory.getLogger(this.getClass()).debug("Skipping " + (to - from) + " bytes to end (" + correctBinaryPackets + "/" + correctNMEAPackets + "/" + incorrectPackets + ")");
+            LoggerFactory.getLogger(this.getClass()).debug("Skipping " + (to - from) + " bytes to end (" + correctBinaryPackets + "/" + correctNMEAPackets + "/" + incorrectPackets + ")");
             return to - from; // everything's bad. skip it all.
         }
     }
 
-    // Returns the number of consumed bytes, or zero if packet needs more data to be valid.
+    // Returns the number of consumed bytes, or zero if packet needs more data
+    // to be valid.
     private int handleBinary(byte[] bin, int from, int to) throws IOException {
         if (to - from < 7) {
             return 0;
@@ -281,15 +288,16 @@ public class InternalUM7LT { // default rate: 115200 baud.
             lastUpdateTime = Time.currentTimeMillis();
             onUpdate.event();
         } else if (address == 0xAA) {
-        	LoggerFactory.getLogger(this.getClass()).info("UM7LT firmware revision: " + new String(new char[] { (char) ((data[0] >> 24) & 0xFF), (char) ((data[0] >> 16) & 0xFF), (char) ((data[0] >> 8) & 0xFF), (char) (data[0] & 0xFF) }));
+            LoggerFactory.getLogger(this.getClass()).info("UM7LT firmware revision: " + new String(new char[] { (char) ((data[0] >> 24) & 0xFF), (char) ((data[0] >> 16) & 0xFF), (char) ((data[0] >> 8) & 0xFF), (char) (data[0] & 0xFF) }));
         } else if (address == 0xAD) {
-        	LoggerFactory.getLogger(this.getClass()).debug("UM7LT gyro calibrating...");
+            LoggerFactory.getLogger(this.getClass()).debug("UM7LT gyro calibrating...");
         } else if (address == 0xC) {
-        	LoggerFactory.getLogger(this.getClass()).debug("UM7LT gyro calibration updated.");
+            LoggerFactory.getLogger(this.getClass()).debug("UM7LT gyro calibration updated.");
         } else if (address != 0) {
-        	LoggerFactory.getLogger(this.getClass()).trace("UNHANDLED BINARY MESSAGE " + Integer.toHexString(address & 0xFF) + " [" + is_hidden + ":" + is_command_failed + "]");
+            LoggerFactory.getLogger(this.getClass()).trace("UNHANDLED BINARY MESSAGE " + Integer.toHexString(address & 0xFF) + " [" + is_hidden + ":" + is_command_failed + "]");
         }
-        return 2 + 4 * data_count + 2 + 3; // two for checksum, three for the 'snp' that was stripped out. 
+        return 2 + 4 * data_count + 2 + 3; // two for checksum, three for the
+                                           // 'snp' that was stripped out.
     }
 
     /**
@@ -398,7 +406,7 @@ public class InternalUM7LT { // default rate: 115200 baud.
     }
 
     private void handleNMEA(byte[] nmea, int from, int to) {
-    	LoggerFactory.getLogger(this.getClass()).trace("UM7LT NMEA received: " + ByteFiddling.parseASCII(nmea, from, to));
+        LoggerFactory.getLogger(this.getClass()).trace("UM7LT NMEA received: " + ByteFiddling.parseASCII(nmea, from, to));
     }
 
     /**
@@ -409,7 +417,7 @@ public class InternalUM7LT { // default rate: 115200 baud.
      */
     public void dumpSerialData() throws IOException {
         while (this.rs232.readNonblocking(1024).length > 0) {
-        	LoggerFactory.getLogger(this.getClass()).trace("dumping...");
+            LoggerFactory.getLogger(this.getClass()).trace("dumping...");
         }
     }
 }

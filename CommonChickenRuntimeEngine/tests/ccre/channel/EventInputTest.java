@@ -35,7 +35,8 @@ import ccre.time.FakeTime;
 import ccre.time.Time;
 import ccre.util.Values;
 
-public class EventInputTest { // TODO: should I be checking propagation of withRecovery messages?
+public class EventInputTest { // TODO: should I be checking propagation of
+                              // withRecovery messages?
 
     private EventInput ei;
     private CountingEventOutput ceo, ceo2;

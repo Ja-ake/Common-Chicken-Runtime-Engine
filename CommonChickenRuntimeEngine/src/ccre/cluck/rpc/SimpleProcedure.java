@@ -94,7 +94,7 @@ public abstract class SimpleProcedure implements RemoteProcedure {
             out.write(invoke(in));
             out.close();
         } catch (IOException ex) {
-        	LoggerFactory.getLogger(this.getClass()).warn("IO Exception during response from SimpleProcedure!", ex);
+            LoggerFactory.getLogger(this.getClass()).warn("IO Exception during response from SimpleProcedure!", ex);
         }
     }
 

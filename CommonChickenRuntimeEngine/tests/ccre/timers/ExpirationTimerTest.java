@@ -1,4 +1,5 @@
 package ccre.timers;
+
 /*
  * Copyright 2015 Colby Skeggs
  *

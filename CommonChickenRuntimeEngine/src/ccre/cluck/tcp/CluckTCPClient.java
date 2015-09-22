@@ -164,7 +164,7 @@ public class CluckTCPClient extends ReporterThread {
             try {
                 sock.close();
             } catch (IOException ex) {
-            	LoggerFactory.getLogger(this.getClass()).warn("IO Error while closing connection", ex);
+                LoggerFactory.getLogger(this.getClass()).warn("IO Error while closing connection", ex);
             }
         }
     }
@@ -175,14 +175,14 @@ public class CluckTCPClient extends ReporterThread {
             while (isRunning) {
                 long start = System.currentTimeMillis();
                 if (logDuringNormalOperation) {
-                	LoggerFactory.getLogger(this.getClass()).debug("Connecting to " + remote + " at " + start);
+                    LoggerFactory.getLogger(this.getClass()).debug("Connecting to " + remote + " at " + start);
                 }
                 String postfix = "";
                 closeActiveConnectionIfAny();
                 try {
                     postfix = tryConnection();
                 } catch (Throwable ex) {
-                	LoggerFactory.getLogger(this.getClass()).error("Uncaught exception in network handler!", ex);
+                    LoggerFactory.getLogger(this.getClass()).error("Uncaught exception in network handler!", ex);
                 }
                 pauseBeforeSubsequentCycle(start, postfix);
             }
@@ -201,7 +201,7 @@ public class CluckTCPClient extends ReporterThread {
         long remaining = reconnectDelayMillis - spent;
         if (remaining > 0) {
             if (remaining > 500 && logDuringNormalOperation) {
-            	LoggerFactory.getLogger(this.getClass()).debug("Waiting " + remaining + " milliseconds before reconnecting." + postfix);
+                LoggerFactory.getLogger(this.getClass()).debug("Waiting " + remaining + " milliseconds before reconnecting." + postfix);
             }
             Thread.sleep(remaining);
         }
@@ -235,7 +235,7 @@ public class CluckTCPClient extends ReporterThread {
                         (ex.getMessage().startsWith("Remote server not available") || ex.getMessage().startsWith("Timed out while connecting")))) {
                     postfix = " (" + ex.getMessage() + ")";
                 } else {
-                	LoggerFactory.getLogger(this.getClass()).warn("IO Error while handling connection", ex);
+                    LoggerFactory.getLogger(this.getClass()).warn("IO Error while handling connection", ex);
                 }
             }
         } finally {

@@ -123,7 +123,7 @@ public class InstinctMultiModule extends InstinctModule {
     public void publishDefaultControls(boolean showIndividualModes, boolean showCycleChooser) {
         CluckPublisher.publish(context.getNode(), "Autonomous Mode Check", new EventOutput() {
             public void event() {
-            	LoggerFactory.getLogger(this.getClass()).info("Current autonomous mode: " + mode.getModeName());
+                LoggerFactory.getLogger(this.getClass()).info("Current autonomous mode: " + mode.getModeName());
             }
         });
         if (showIndividualModes) {
@@ -223,7 +223,7 @@ public class InstinctMultiModule extends InstinctModule {
                 }
             }
             if (this.mode == null) {
-            	LoggerFactory.getLogger(this.getClass()).warn("Invalid loaded mode name: " + modeName);
+                LoggerFactory.getLogger(this.getClass()).warn("Invalid loaded mode name: " + modeName);
                 this.mode = defaultMode;
             }
         }
@@ -268,7 +268,7 @@ public class InstinctMultiModule extends InstinctModule {
         return this.addMode(new InstinctModeModule(name) {
             @Override
             protected void autonomousMain() throws AutonomousModeOverException, InterruptedException {
-            	LoggerFactory.getLogger(this.getClass()).info(message);
+                LoggerFactory.getLogger(this.getClass()).info(message);
             }
 
             @Override
@@ -281,9 +281,9 @@ public class InstinctMultiModule extends InstinctModule {
     @Override
     protected final void autonomousMain() throws AutonomousModeOverException, InterruptedException {
         if (mode == null) {
-        	LoggerFactory.getLogger(this.getClass()).error("No autonomous mode found! Did you remember to call InstinctMultiModule.loadSettings()?");
+            LoggerFactory.getLogger(this.getClass()).error("No autonomous mode found! Did you remember to call InstinctMultiModule.loadSettings()?");
         } else {
-        	LoggerFactory.getLogger(this.getClass()).info("Running autonomous mode: " + mode.getModeName());
+            LoggerFactory.getLogger(this.getClass()).info("Running autonomous mode: " + mode.getModeName());
             mode.autonomousMain();
         }
     }

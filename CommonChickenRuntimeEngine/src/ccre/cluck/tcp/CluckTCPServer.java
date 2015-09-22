@@ -77,7 +77,8 @@ public class CluckTCPServer extends ConnectionReceiverThread {
                     CluckProtocol.setTimeoutOnSocket(conn);
                     CluckLink deny = CluckProtocol.handleSend(dout, linkName, node);
                     CluckProtocol.handleRecv(din, linkName, node, deny);
-                    // node.notifyNetworkModified(); - sent by client, not needed here.
+                    // node.notifyNetworkModified(); - sent by client, not
+                    // needed here.
                 } finally {
                     dout.close();
                 }
@@ -85,7 +86,7 @@ public class CluckTCPServer extends ConnectionReceiverThread {
                 din.close();
             }
         } catch (IOException ex) {
-        	LoggerFactory.getLogger(this.getClass()).warn("Bad IO in " + Thread.currentThread() + ": " + ex);
+            LoggerFactory.getLogger(this.getClass()).warn("Bad IO in " + Thread.currentThread() + ": " + ex);
         }
     }
 }

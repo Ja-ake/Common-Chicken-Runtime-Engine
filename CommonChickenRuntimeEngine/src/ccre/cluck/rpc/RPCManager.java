@@ -62,7 +62,7 @@ public final class RPCManager implements Serializable {
         new CluckSubscriber(node) {
             @Override
             protected void receive(String source, byte[] data) {
-            	LoggerFactory.getLogger(this.getClass()).warn("Message to RPC endpoint!");
+                LoggerFactory.getLogger(this.getClass()).warn("Message to RPC endpoint!");
             }
 
             @Override
@@ -74,13 +74,13 @@ public final class RPCManager implements Serializable {
                         stream = localBindings.get(dest);
                     }
                     if (stream == null) {
-                    	LoggerFactory.getLogger(this.getClass()).warn("No RPC binding for: " + dest);
+                        LoggerFactory.getLogger(this.getClass()).warn("No RPC binding for: " + dest);
                     } else {
                         try {
                             stream.write(data, 1, data.length - 1);
                             stream.close();
                         } catch (IOException ex) {
-                        	LoggerFactory.getLogger(this.getClass()).warn("Exception in RPC response write!", ex);
+                            LoggerFactory.getLogger(this.getClass()).warn("Exception in RPC response write!", ex);
                         }
                         synchronized (RPCManager.this) {
                             localBindings.remove(dest);
@@ -154,7 +154,7 @@ public final class RPCManager implements Serializable {
                 try {
                     bindings.remove(rmt).close();
                 } catch (IOException ex) {
-                	LoggerFactory.getLogger(this.getClass()).warn("Exception during timeout close!", ex);
+                    LoggerFactory.getLogger(this.getClass()).warn("Exception during timeout close!", ex);
                 }
             }
         }

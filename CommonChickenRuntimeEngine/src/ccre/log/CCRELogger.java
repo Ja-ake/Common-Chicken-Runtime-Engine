@@ -13,20 +13,20 @@ public class CCRELogger implements Logger {
 
     private final String classname;
     private final CopyOnWriteArrayList<LoggingTarget> targets = new CopyOnWriteArrayList<>();
-    
+
     private LogLevel lowestLevelEnabled = LogLevel.TRACE;
     private boolean includeLineNumbers = true;
-    
+
     /**
-     * Constructs a CCRELogger that corresponds to the class
-     * of the name specified. Package scope, as this constructor
-     * should only be called by {@link CCRELoggerFactory#getLogger(String)}.
+     * Constructs a CCRELogger that corresponds to the class of the name
+     * specified. Package scope, as this constructor should only be called by
+     * {@link CCRELoggerFactory#getLogger(String)}.
      */
     CCRELogger(String clazzname) {
         classname = clazzname;
         targets.add(new StandardStreamLogger());
     }
-    
+
     /**
      * Set whether or not filenames and line numbers should be prefixed to
      * logging messages, when available.
@@ -64,7 +64,7 @@ public class CCRELogger implements Logger {
     public synchronized void removeTarget(LoggingTarget lt) {
         targets.remove(lt);
     }
-    
+
     private String prependCallerInfo(int index, String message) {
         if (includeLineNumbers && !message.startsWith("(") && !message.startsWith("[")) {
             CallerInfo caller = Utils.getMethodCaller(index + 1);
@@ -79,34 +79,38 @@ public class CCRELogger implements Logger {
 
         return message;
     }
-    
+
     private void logInternal(LogLevel level, String message, Throwable thr) {
         if (level == null || message == null) {
             throw new NullPointerException();
         }
-        message = prependCallerInfo(2, message); // 2 = offset to function that calls logger
+        message = prependCallerInfo(2, message); // 2 = offset to function that
+                                                 // calls logger
         for (LoggingTarget lt : targets) {
             lt.log(level, message, thr);
         }
     }
-    
+
     private String format(String format, Object... args) {
-        // TODO: optimize this, right now it's O(format.length * args.length), should be O(format.length)
-    	// Warning: this implementation is /slow/ but we don't care right now because it works :)
-    	
+        // TODO: optimize this, right now it's O(format.length * args.length),
+        // should be O(format.length)
+        // Warning: this implementation is /slow/ but we don't care right now
+        // because it works :)
+
         for (Object obj : args) {
-        	String tempformat = format.replaceFirst("\\{\\}", obj.toString());
-        	if (tempformat.contentEquals(format)) throw new IllegalArgumentException("Too many arguments: " + args.length + "!");
-        	format = tempformat;
+            String tempformat = format.replaceFirst("\\{\\}", obj.toString());
+            if (tempformat.contentEquals(format))
+                throw new IllegalArgumentException("Too many arguments: " + args.length + "!");
+            format = tempformat;
         }
-        
+
         if (format.length() != format.replaceFirst("\\{\\}", "").length()) {
-        	throw new IllegalArgumentException("Too few arguments: " + args.length + "!");
+            throw new IllegalArgumentException("Too few arguments: " + args.length + "!");
         }
-        
+
         return format;
     }
-        
+
     @Override
     public String getName() {
         return classname;
@@ -120,31 +124,36 @@ public class CCRELogger implements Logger {
 
     @Override
     public void trace(String msg) {
-        if (!isTraceEnabled()) return;
+        if (!isTraceEnabled())
+            return;
         logInternal(LogLevel.TRACE, msg, null);
     }
 
     @Override
     public void trace(String format, Object arg) {
-        if (!isTraceEnabled()) return;
+        if (!isTraceEnabled())
+            return;
         logInternal(LogLevel.TRACE, format(format, arg), null);
     }
 
     @Override
     public void trace(String format, Object arg1, Object arg2) {
-        if (!isTraceEnabled()) return;
+        if (!isTraceEnabled())
+            return;
         logInternal(LogLevel.TRACE, format(format, arg1, arg2), null);
     }
 
     @Override
     public void trace(String format, Object... arguments) {
-        if (!isTraceEnabled()) return;
+        if (!isTraceEnabled())
+            return;
         logInternal(LogLevel.TRACE, format(format, arguments), null);
     }
 
     @Override
     public void trace(String msg, Throwable t) {
-        if (!isTraceEnabled()) return;
+        if (!isTraceEnabled())
+            return;
         logInternal(LogLevel.TRACE, msg, t);
     }
 
@@ -156,31 +165,36 @@ public class CCRELogger implements Logger {
 
     @Override
     public void trace(Marker marker, String msg) {
-        if (!isTraceEnabled(marker)) return;
+        if (!isTraceEnabled(marker))
+            return;
         logInternal(LogLevel.TRACE, msg, null);
     }
 
     @Override
     public void trace(Marker marker, String format, Object arg) {
-        if (!isTraceEnabled(marker)) return;
+        if (!isTraceEnabled(marker))
+            return;
         logInternal(LogLevel.TRACE, format(format, arg), null);
     }
 
     @Override
     public void trace(Marker marker, String format, Object arg1, Object arg2) {
-        if (!isTraceEnabled(marker)) return;
+        if (!isTraceEnabled(marker))
+            return;
         logInternal(LogLevel.TRACE, format(format, arg1, arg2), null);
     }
 
     @Override
     public void trace(Marker marker, String format, Object... argArray) {
-        if (!isTraceEnabled(marker)) return;
+        if (!isTraceEnabled(marker))
+            return;
         logInternal(LogLevel.TRACE, format(format, argArray), null);
     }
 
     @Override
     public void trace(Marker marker, String msg, Throwable t) {
-        if (!isTraceEnabled(marker)) return;
+        if (!isTraceEnabled(marker))
+            return;
         logInternal(LogLevel.TRACE, msg, t);
     }
 
@@ -192,31 +206,36 @@ public class CCRELogger implements Logger {
 
     @Override
     public void debug(String msg) {
-        if (!isDebugEnabled()) return;
+        if (!isDebugEnabled())
+            return;
         logInternal(LogLevel.DEBUG, msg, null);
     }
 
     @Override
     public void debug(String format, Object arg) {
-        if (!isDebugEnabled()) return;
+        if (!isDebugEnabled())
+            return;
         logInternal(LogLevel.DEBUG, format(format, arg), null);
     }
 
     @Override
     public void debug(String format, Object arg1, Object arg2) {
-        if (!isDebugEnabled()) return;
+        if (!isDebugEnabled())
+            return;
         logInternal(LogLevel.DEBUG, format(format, arg1, arg2), null);
     }
 
     @Override
     public void debug(String format, Object... arguments) {
-        if (!isDebugEnabled()) return;
+        if (!isDebugEnabled())
+            return;
         logInternal(LogLevel.DEBUG, format(format, arguments), null);
     }
 
     @Override
     public void debug(String msg, Throwable t) {
-        if (!isDebugEnabled()) return;
+        if (!isDebugEnabled())
+            return;
         logInternal(LogLevel.DEBUG, msg, t);
     }
 
@@ -228,31 +247,36 @@ public class CCRELogger implements Logger {
 
     @Override
     public void debug(Marker marker, String msg) {
-        if (!isDebugEnabled(marker)) return;
+        if (!isDebugEnabled(marker))
+            return;
         logInternal(LogLevel.DEBUG, msg, null);
     }
 
     @Override
     public void debug(Marker marker, String format, Object arg) {
-        if (!isDebugEnabled(marker)) return;
+        if (!isDebugEnabled(marker))
+            return;
         logInternal(LogLevel.DEBUG, format(format, arg), null);
     }
 
     @Override
     public void debug(Marker marker, String format, Object arg1, Object arg2) {
-        if (!isDebugEnabled(marker)) return;
+        if (!isDebugEnabled(marker))
+            return;
         logInternal(LogLevel.DEBUG, format(format, arg1, arg2), null);
     }
 
     @Override
     public void debug(Marker marker, String format, Object... arguments) {
-        if (!isDebugEnabled(marker)) return;
+        if (!isDebugEnabled(marker))
+            return;
         logInternal(LogLevel.DEBUG, format(format, arguments), null);
     }
 
     @Override
     public void debug(Marker marker, String msg, Throwable t) {
-        if (!isDebugEnabled(marker)) return;
+        if (!isDebugEnabled(marker))
+            return;
         logInternal(LogLevel.DEBUG, msg, t);
     }
 
@@ -264,31 +288,36 @@ public class CCRELogger implements Logger {
 
     @Override
     public void info(String msg) {
-        if (!isInfoEnabled()) return;
+        if (!isInfoEnabled())
+            return;
         logInternal(LogLevel.INFO, msg, null);
     }
 
     @Override
     public void info(String format, Object arg) {
-        if (!isInfoEnabled()) return;
+        if (!isInfoEnabled())
+            return;
         logInternal(LogLevel.INFO, format(format, arg), null);
     }
 
     @Override
     public void info(String format, Object arg1, Object arg2) {
-        if (!isInfoEnabled()) return;
+        if (!isInfoEnabled())
+            return;
         logInternal(LogLevel.INFO, format(format, arg1, arg2), null);
     }
 
     @Override
     public void info(String format, Object... arguments) {
-        if (!isInfoEnabled()) return;
+        if (!isInfoEnabled())
+            return;
         logInternal(LogLevel.INFO, format(format, arguments), null);
     }
 
     @Override
     public void info(String msg, Throwable t) {
-        if (!isInfoEnabled()) return;
+        if (!isInfoEnabled())
+            return;
         logInternal(LogLevel.INFO, msg, t);
     }
 
@@ -300,31 +329,36 @@ public class CCRELogger implements Logger {
 
     @Override
     public void info(Marker marker, String msg) {
-        if (!isInfoEnabled(marker)) return;
+        if (!isInfoEnabled(marker))
+            return;
         logInternal(LogLevel.INFO, msg, null);
     }
 
     @Override
     public void info(Marker marker, String format, Object arg) {
-        if (!isInfoEnabled(marker)) return;
+        if (!isInfoEnabled(marker))
+            return;
         logInternal(LogLevel.INFO, format(format, arg), null);
     }
 
     @Override
     public void info(Marker marker, String format, Object arg1, Object arg2) {
-        if (!isInfoEnabled(marker)) return;
+        if (!isInfoEnabled(marker))
+            return;
         logInternal(LogLevel.INFO, format(format, arg1, arg2), null);
     }
 
     @Override
     public void info(Marker marker, String format, Object... arguments) {
-        if (!isInfoEnabled(marker)) return;
+        if (!isInfoEnabled(marker))
+            return;
         logInternal(LogLevel.INFO, format(format, arguments), null);
     }
 
     @Override
     public void info(Marker marker, String msg, Throwable t) {
-        if (!isInfoEnabled(marker)) return;
+        if (!isInfoEnabled(marker))
+            return;
         logInternal(LogLevel.INFO, msg, t);
     }
 
@@ -336,31 +370,36 @@ public class CCRELogger implements Logger {
 
     @Override
     public void warn(String msg) {
-        if (!isWarnEnabled()) return;
+        if (!isWarnEnabled())
+            return;
         logInternal(LogLevel.WARN, msg, null);
     }
 
     @Override
     public void warn(String format, Object arg) {
-        if (!isWarnEnabled()) return;
+        if (!isWarnEnabled())
+            return;
         logInternal(LogLevel.WARN, format(format, arg), null);
     }
 
     @Override
     public void warn(String format, Object... arguments) {
-        if (!isWarnEnabled()) return;
+        if (!isWarnEnabled())
+            return;
         logInternal(LogLevel.WARN, format(format, arguments), null);
     }
 
     @Override
     public void warn(String format, Object arg1, Object arg2) {
-        if (!isWarnEnabled()) return;
+        if (!isWarnEnabled())
+            return;
         logInternal(LogLevel.WARN, format(format, arg1, arg2), null);
     }
 
     @Override
     public void warn(String msg, Throwable t) {
-        if (!isWarnEnabled()) return;
+        if (!isWarnEnabled())
+            return;
         logInternal(LogLevel.WARN, msg, t);
     }
 
@@ -372,32 +411,37 @@ public class CCRELogger implements Logger {
 
     @Override
     public void warn(Marker marker, String msg) {
-        if (!isWarnEnabled(marker)) return;
+        if (!isWarnEnabled(marker))
+            return;
         logInternal(LogLevel.WARN, msg, null);
     }
 
     @Override
     public void warn(Marker marker, String format, Object arg) {
-        if (!isWarnEnabled(marker)) return;
+        if (!isWarnEnabled(marker))
+            return;
         logInternal(LogLevel.WARN, format(format, arg), null);
     }
 
     @Override
     public void warn(Marker marker, String format, Object arg1, Object arg2) {
-        if (!isWarnEnabled(marker)) return;
+        if (!isWarnEnabled(marker))
+            return;
         logInternal(LogLevel.WARN, format(format, arg1, arg2), null);
     }
 
     @Override
     public void warn(Marker marker, String format, Object... arguments) {
-        if (!isWarnEnabled(marker)) return;
+        if (!isWarnEnabled(marker))
+            return;
         logInternal(LogLevel.WARN, format(format, arguments), null);
     }
 
     @Override
     public void warn(Marker marker, String msg, Throwable t) {
-        if (!isWarnEnabled(marker)) return;
-        logInternal(LogLevel.WARN, msg, t);      
+        if (!isWarnEnabled(marker))
+            return;
+        logInternal(LogLevel.WARN, msg, t);
     }
 
     @Override
@@ -408,36 +452,40 @@ public class CCRELogger implements Logger {
 
     @Override
     public void error(String msg) {
-        if (!isErrorEnabled()) return;
+        if (!isErrorEnabled())
+            return;
         logInternal(LogLevel.ERROR, msg, null);
 
-        
     }
 
     @Override
     public void error(String format, Object arg) {
-        if (!isErrorEnabled()) return;
+        if (!isErrorEnabled())
+            return;
         logInternal(LogLevel.ERROR, format(format, arg), null);
-        
+
     }
 
     @Override
     public void error(String format, Object arg1, Object arg2) {
-        if (!isErrorEnabled()) return;
+        if (!isErrorEnabled())
+            return;
         logInternal(LogLevel.ERROR, format(format, arg1, arg2), null);
-        
+
     }
 
     @Override
     public void error(String format, Object... arguments) {
-        if (!isErrorEnabled()) return;
+        if (!isErrorEnabled())
+            return;
         logInternal(LogLevel.ERROR, format(format, arguments), null);
-        
+
     }
 
     @Override
     public void error(String msg, Throwable t) {
-        if (!isErrorEnabled()) return;
+        if (!isErrorEnabled())
+            return;
         logInternal(LogLevel.ERROR, msg, t);
     }
 
@@ -449,100 +497,105 @@ public class CCRELogger implements Logger {
 
     @Override
     public void error(Marker marker, String msg) {
-        if (!isErrorEnabled(marker)) return;
+        if (!isErrorEnabled(marker))
+            return;
         logInternal(LogLevel.ERROR, msg, null);
     }
 
     @Override
     public void error(Marker marker, String format, Object arg) {
-        if (!isErrorEnabled(marker)) return;
+        if (!isErrorEnabled(marker))
+            return;
         logInternal(LogLevel.ERROR, format(format, arg), null);
     }
 
     @Override
     public void error(Marker marker, String format, Object arg1, Object arg2) {
-        if (!isErrorEnabled(marker)) return;
+        if (!isErrorEnabled(marker))
+            return;
         logInternal(LogLevel.ERROR, format(format, arg1, arg2), null);
     }
 
     @Override
     public void error(Marker marker, String format, Object... arguments) {
-        if (!isErrorEnabled(marker)) return;
+        if (!isErrorEnabled(marker))
+            return;
         logInternal(LogLevel.ERROR, format(format, arguments), null);
     }
 
     @Override
     public void error(Marker marker, String msg, Throwable t) {
-        if (!isErrorEnabled(marker)) return;
+        if (!isErrorEnabled(marker))
+            return;
         logInternal(LogLevel.ERROR, msg, t);
     }
 
-    public static void logByLevel(Logger logger, LogLevel level, String message, Throwable throwable) {            
+    public static void logByLevel(Logger logger, LogLevel level, String message, Throwable throwable) {
         switch (level.id) {
         case LogLevel.FATAL_ID:
-        	logger.error("[NET] " + message, throwable);
-        	break;
+            logger.error("[NET] " + message, throwable);
+            break;
         case LogLevel.ERROR_ID:
-        	logger.error("[NET] " + message, throwable);
-        	break;
+            logger.error("[NET] " + message, throwable);
+            break;
         case LogLevel.WARN_ID:
-        	logger.warn("[NET] " + message, throwable);
-        	break;
+            logger.warn("[NET] " + message, throwable);
+            break;
         case LogLevel.INFO_ID:
-        	logger.info("[NET] " + message, throwable);
-        	break;
+            logger.info("[NET] " + message, throwable);
+            break;
         case LogLevel.DEBUG_ID:
-        	logger.debug("[NET] " + message, throwable);
-        	break;
+            logger.debug("[NET] " + message, throwable);
+            break;
         case LogLevel.TRACE_ID:
-        	logger.trace("[NET] " + message, throwable);
-        	break;
+            logger.trace("[NET] " + message, throwable);
+            break;
         }
     }
 
     public static void logByLevel(Logger logger, LogLevel level, String message, String extended) {
         switch (level.id) {
         case LogLevel.FATAL_ID:
-        	logger.error("[NET] " + message, extended);
-        	break;
+            logger.error("[NET] " + message, extended);
+            break;
         case LogLevel.ERROR_ID:
-        	logger.error("[NET] " + message, extended);
-        	break;
+            logger.error("[NET] " + message, extended);
+            break;
         case LogLevel.WARN_ID:
-        	logger.warn("[NET] " + message, extended);
-        	break;
+            logger.warn("[NET] " + message, extended);
+            break;
         case LogLevel.INFO_ID:
-        	logger.info("[NET] " + message, extended);
-        	break;
+            logger.info("[NET] " + message, extended);
+            break;
         case LogLevel.DEBUG_ID:
-        	logger.debug("[NET] " + message, extended);
-        	break;
+            logger.debug("[NET] " + message, extended);
+            break;
         case LogLevel.TRACE_ID:
-        	logger.trace("[NET] " + message, extended);
-        	break;
+            logger.trace("[NET] " + message, extended);
+            break;
         }
     }
-    
+
     public static void logByLevel(Logger logger, LogLevel level, String message) {
         switch (level.id) {
         case LogLevel.FATAL_ID:
-        	logger.error("[NET] " + message);
-        	break;
+            logger.error("[NET] " + message);
+            break;
         case LogLevel.ERROR_ID:
-        	logger.error("[NET] " + message);
-        	break;
+            logger.error("[NET] " + message);
+            break;
         case LogLevel.WARN_ID:
-        	logger.warn("[NET] " + message);
-        	break;
+            logger.warn("[NET] " + message);
+            break;
         case LogLevel.INFO_ID:
-        	logger.info("[NET] " + message);
-        	break;
+            logger.info("[NET] " + message);
+            break;
         case LogLevel.DEBUG_ID:
-        	logger.debug("[NET] " + message);
-        	break;
+            logger.debug("[NET] " + message);
+            break;
         case LogLevel.TRACE_ID:
-        	logger.trace("[NET] " + message);
-        	break;
+            logger.trace("[NET] " + message);
+            break;
         }
     }
 }

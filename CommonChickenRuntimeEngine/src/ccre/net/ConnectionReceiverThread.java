@@ -56,13 +56,13 @@ public abstract class ConnectionReceiverThread extends ReporterThread {
 
     @Override
     protected final void threadBody() throws IOException {
-    	LoggerFactory.getLogger(this.getClass()).debug("About to listen on " + port);
+        LoggerFactory.getLogger(this.getClass()).debug("About to listen on " + port);
         ServerSocket sock;
         try {
             sock = Network.bind(port);
         } catch (IOException e) {
             if (e.getClass().getName().equals("java.net.BindException")) {
-            	LoggerFactory.getLogger(this.getClass()).warn("Failed to bind to port " + port + ".");
+                LoggerFactory.getLogger(this.getClass()).warn("Failed to bind to port " + port + ".");
                 return;
             }
             throw e;

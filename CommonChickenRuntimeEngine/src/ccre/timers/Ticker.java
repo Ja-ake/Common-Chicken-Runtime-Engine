@@ -155,7 +155,7 @@ public final class Ticker implements EventInput {
                     }
                 }
             } catch (Throwable thr) {
-            	LoggerFactory.getLogger(this.getClass()).error("Exception in Ticker main loop!", thr);
+                LoggerFactory.getLogger(this.getClass()).error("Exception in Ticker main loop!", thr);
                 countFails += 10;
             }
         }

@@ -113,17 +113,17 @@ public abstract class InstinctModule extends InstinctBaseModule {
             }
             try {
                 try {
-                	LoggerFactory.getLogger(this.getClass()).debug("Started " + getTypeName() + ".");
+                    LoggerFactory.getLogger(this.getClass()).debug("Started " + getTypeName() + ".");
                     autonomousMain();
                     LoggerFactory.getLogger(this.getClass()).debug("Completed " + getTypeName() + ".");
                 } catch (InterruptedException ex) {
-                	LoggerFactory.getLogger(this.getClass()).debug("Interrupted " + getTypeName() + ".");
+                    LoggerFactory.getLogger(this.getClass()).debug("Interrupted " + getTypeName() + ".");
                 } catch (AutonomousModeOverException ex) {
-                	LoggerFactory.getLogger(this.getClass()).debug("Exited " + getTypeName() + " by stop.");
+                    LoggerFactory.getLogger(this.getClass()).debug("Exited " + getTypeName() + " by stop.");
                     continue;
                 }
             } catch (Throwable t) {
-            	LoggerFactory.getLogger(this.getClass()).error("Exception thrown during Autonomous mode!", t);
+                LoggerFactory.getLogger(this.getClass()).error("Exception thrown during Autonomous mode!", t);
             }
             while (shouldBeRunning.get()) {
                 try {

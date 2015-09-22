@@ -65,6 +65,6 @@ public final class EventLogger implements EventOutput {
     }
 
     public void event() {
-    	CCRELogger.logByLevel(LoggerFactory.getLogger(NetworkAutologger.class), level, message);
+        CCRELogger.logByLevel(LoggerFactory.getLogger(NetworkAutologger.class), level, message);
     }
 }

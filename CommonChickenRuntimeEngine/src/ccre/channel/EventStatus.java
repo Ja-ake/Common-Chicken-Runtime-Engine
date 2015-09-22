@@ -104,7 +104,7 @@ public class EventStatus implements EventInput, EventOutput, Serializable {
         }
         consumers.add(client);
     }
-    
+
     public EventOutput onUpdateR(EventOutput client) {
         return Utils.addR(consumers, client);
     }

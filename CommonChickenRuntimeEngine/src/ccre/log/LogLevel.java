@@ -30,47 +30,47 @@ import java.io.Serializable;
 public class LogLevel implements Serializable, Comparable<LogLevel> {
 
     private static final long serialVersionUID = -4814366160212981658L;
-    
+
     public static final byte FATAL_ID = 9;
     public static final byte ERROR_ID = 6;
     public static final byte WARN_ID = 3;
     public static final byte INFO_ID = 0;
     public static final byte DEBUG_ID = -3;
     public static final byte TRACE_ID = -6;
-    
+
     /**
      * A severe error. This usually means that something major didn't work, or
      * an impossible condition occurred.
      */
     public static final LogLevel FATAL = new LogLevel(FATAL_ID, "FATAL");
-    
+
     /**
-     * An error. This usually means that something bad happened, but some
-     * things may still work.
+     * An error. This usually means that something bad happened, but some things
+     * may still work.
      */
     public static final LogLevel ERROR = new LogLevel(ERROR_ID, "ERROR");
-    
+
     /**
-     * A warning. This usually means that something that could cause a
-     * potential problem happened, but things should still work.
+     * A warning. This usually means that something that could cause a potential
+     * problem happened, but things should still work.
      */
     public static final LogLevel WARN = new LogLevel(ERROR_ID, "WARN");
-    
+
     /**
      * A piece of info. This usually means something happened that the user
      * might want to know.
      */
     public static final LogLevel INFO = new LogLevel(INFO_ID, "INFO");
-    
+
     /**
-     * A debugging message. This can be caused by anything, but
-     * probably shouldn't be logged particularly often.
+     * A debugging message. This can be caused by anything, but probably
+     * shouldn't be logged particularly often.
      */
     public static final LogLevel DEBUG = new LogLevel(DEBUG_ID, "DEBUG");
-    
+
     /**
-     * A trace message. This could be caused by anything, but probably
-     * shouldn't be logged particularly often.
+     * A trace message. This could be caused by anything, but probably shouldn't
+     * be logged particularly often.
      */
     public static final LogLevel TRACE = new LogLevel(TRACE_ID, "TRACE");
 
@@ -168,8 +168,10 @@ public class LogLevel implements Serializable, Comparable<LogLevel> {
 
     @Override
     public int compareTo(LogLevel o) {
-        if (o.id > this.id) return -1;
-        if (o.id < this.id) return +1;
+        if (o.id > this.id)
+            return -1;
+        if (o.id < this.id)
+            return +1;
         return 0; // they are equal
     }
 }

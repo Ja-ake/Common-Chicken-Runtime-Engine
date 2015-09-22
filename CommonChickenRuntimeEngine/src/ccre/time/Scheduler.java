@@ -27,7 +27,10 @@ import ccre.concurrency.ReporterThread;
 
 public class Scheduler {
 
-    private static final long MAXIMUM_REASONABLE_DELAY = 3;// warn if more than 3 milliseconds are spent handling anything
+    private static final long MAXIMUM_REASONABLE_DELAY = 3;// warn if more than
+                                                           // 3 milliseconds are
+                                                           // spent handling
+                                                           // anything
     private final Time provider;
     private final ReporterThread scheduler = new ReporterThread("Scheduler") {
         @Override
@@ -57,15 +60,17 @@ public class Scheduler {
                 try {
                     ent.target.event();
                 } catch (Throwable throwable) {
-                	LoggerFactory.getLogger(this.getClass()).error("Scheduler target threw an exception!", throwable);
+                    LoggerFactory.getLogger(this.getClass()).error("Scheduler target threw an exception!", throwable);
                 }
                 long delta = provider.nowMillis() - now;
                 if (delta > MAXIMUM_REASONABLE_DELAY) {
-                	LoggerFactory.getLogger(this.getClass()).warn("[LOCAL] Event exceeded maximum reasonable delay: " + ent + " for " + delta + " millis.");
+                    LoggerFactory.getLogger(this.getClass()).warn("[LOCAL] Event exceeded maximum reasonable delay: " + ent + " for " + delta + " millis.");
                 }
             }
         } catch (InterruptedException ex) {
-            if (!stop) {// if we're SUPPOSED to stop... then let's just stop, quietly. but otherwise, it's an issue and we should be LOUD!
+            if (!stop) {// if we're SUPPOSED to stop... then let's just stop,
+                        // quietly. but otherwise, it's an issue and we should
+                        // be LOUD!
                 throw ex;
             }
         }

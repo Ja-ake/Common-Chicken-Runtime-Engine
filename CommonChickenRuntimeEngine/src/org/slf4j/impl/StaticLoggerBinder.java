@@ -13,12 +13,12 @@ public class StaticLoggerBinder {
      * The unique instance of this class.
      */
     private static final StaticLoggerBinder SINGLETON = new StaticLoggerBinder();
-    
+
     /**
      * The unique instance of CCRELoggerFactory.
      */
-    private static final CCRELoggerFactory CCRE_FACTORY = new CCRELoggerFactory(); 
-    
+    private static final CCRELoggerFactory CCRE_FACTORY = new CCRELoggerFactory();
+
     /**
      * Return the singleton of this class.
      * 
@@ -39,13 +39,13 @@ public class StaticLoggerBinder {
      * @return An immutable instance of {@link CCRELoggerFactory}
      */
     public ILoggerFactory getLoggerFactory() {
-    	return CCRE_FACTORY;
+        return CCRE_FACTORY;
     }
 
     /**
      * @return The class name of {@link CCRELoggerFactory}
      */
     public String getLoggerFactoryClassStr() {
-    	return CCRE_FACTORY.getClass().getName();
+        return CCRE_FACTORY.getClass().getName();
     }
 }

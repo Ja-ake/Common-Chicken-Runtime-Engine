@@ -204,7 +204,8 @@ public class BooleanInputTest {
             }
         };
         BooleanInput bi2 = bi.not();
-        result = false;// no update fired because not() is required to work without that.
+        result = false;// no update fired because not() is required to work
+                       // without that.
         assertTrue(bi2.get());
         result = true;
         assertFalse(bi2.get());

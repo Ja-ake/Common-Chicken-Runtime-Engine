@@ -170,7 +170,7 @@ public final class ExpirationTimer {
             try {
                 t.cnsm.event();
             } catch (Throwable thr) {
-            	LoggerFactory.getLogger(this.getClass()).error("Exception in ExpirationTimer dispatch!", thr);
+                LoggerFactory.getLogger(this.getClass()).error("Exception in ExpirationTimer dispatch!", thr);
             }
         }
     }
@@ -187,11 +187,18 @@ public final class ExpirationTimer {
                 recalculateTasks();
                 long startAt = startedAt;
                 runTasks(startAt);
-                while (isStarted.get() && !terminated && startAt == startedAt) {// Once finished, wait to stop before restarting.
+                while (isStarted.get() && !terminated && startAt == startedAt) {// Once
+                                                                                // finished,
+                                                                                // wait
+                                                                                // to
+                                                                                // stop
+                                                                                // before
+                                                                                // restarting.
                     try {
                         this.wait();
                     } catch (InterruptedException e) {
-                        // this is actually the expected way of notifying this thread
+                        // this is actually the expected way of notifying this
+                        // thread
                     }
                 }
             } catch (InterruptedException ex) {

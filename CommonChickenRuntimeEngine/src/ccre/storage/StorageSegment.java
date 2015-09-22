@@ -95,7 +95,7 @@ public final class StorageSegment {
         try {
             InputStream target = Storage.openInput("ccre_storage_" + name);
             if (target == null) {
-            	LoggerFactory.getLogger(this.getClass()).info("No data file for: " + name + " - assuming empty.");
+                LoggerFactory.getLogger(this.getClass()).info("No data file for: " + name + " - assuming empty.");
             } else {
                 try {
                     loadProperties(target, true, data);
@@ -197,12 +197,14 @@ public final class StorageSegment {
                 float value = Float.parseFloat(vraw);
                 String draw = getStringForKey(default_key);
                 float default_ = draw == null ? Float.NaN : Float.parseFloat(draw);
-                // If the default is the same as the holder's default, then load the value
+                // If the default is the same as the holder's default, then load
+                // the value
                 if (draw == null || Float.floatToIntBits(default_) == Float.floatToIntBits(originalValue)) {
                     LoggerFactory.getLogger(this.getClass()).debug("Loaded config for " + name + ": def:" + default_ + " old:" + originalValue + " new:" + value);
                     holder.set(value);
                 }
-                // Otherwise, the default has changed from the holder, and therefore we want the updated value from the holder
+                // Otherwise, the default has changed from the holder, and
+                // therefore we want the updated value from the holder
             } catch (NumberFormatException ex) {
                 LoggerFactory.getLogger(this.getClass()).warn("Invalid float value: '" + vraw + "'!", ex);
             }
@@ -233,12 +235,14 @@ public final class StorageSegment {
             try {
                 boolean value = Boolean.parseBoolean(vraw);
                 String draw = getStringForKey(default_key);
-                // If the default is the same as the holder's default, then load the value
+                // If the default is the same as the holder's default, then load
+                // the value
                 if (draw == null || Boolean.parseBoolean(draw) == originalValue) {
                     LoggerFactory.getLogger(this.getClass()).debug("Loaded config for " + name + ": def:" + draw + " old:" + originalValue + " new:" + value);
                     holder.set(value);
                 }
-                // Otherwise, the default has changed from the holder, and therefore we want the updated value from the holder
+                // Otherwise, the default has changed from the holder, and
+                // therefore we want the updated value from the holder
             } catch (NumberFormatException ex) {
                 LoggerFactory.getLogger(this.getClass()).warn("Invalid boolean value: '" + vraw + "'!", ex);
             }

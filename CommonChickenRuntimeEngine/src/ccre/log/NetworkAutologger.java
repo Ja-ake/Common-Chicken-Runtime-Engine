@@ -43,49 +43,49 @@ public final class NetworkAutologger implements LoggingTarget, CluckRemoteListen
      */
     private static volatile boolean registered = false;
     private static final LoggingTarget localLoggingTarget = new LoggingTarget() {
-        public void log(LogLevel level, String message, Throwable throwable) {            
+        public void log(LogLevel level, String message, Throwable throwable) {
             switch (level.id) {
             case LogLevel.FATAL_ID:
-            	LoggerFactory.getLogger(this.getClass()).error("[NET] " + message, throwable);
-            	break;
+                LoggerFactory.getLogger(this.getClass()).error("[NET] " + message, throwable);
+                break;
             case LogLevel.ERROR_ID:
-            	LoggerFactory.getLogger(this.getClass()).error("[NET] " + message, throwable);
-            	break;
+                LoggerFactory.getLogger(this.getClass()).error("[NET] " + message, throwable);
+                break;
             case LogLevel.WARN_ID:
-            	LoggerFactory.getLogger(this.getClass()).warn("[NET] " + message, throwable);
-            	break;
+                LoggerFactory.getLogger(this.getClass()).warn("[NET] " + message, throwable);
+                break;
             case LogLevel.INFO_ID:
-            	LoggerFactory.getLogger(this.getClass()).info("[NET] " + message, throwable);
-            	break;
+                LoggerFactory.getLogger(this.getClass()).info("[NET] " + message, throwable);
+                break;
             case LogLevel.DEBUG_ID:
-            	LoggerFactory.getLogger(this.getClass()).debug("[NET] " + message, throwable);
-            	break;
+                LoggerFactory.getLogger(this.getClass()).debug("[NET] " + message, throwable);
+                break;
             case LogLevel.TRACE_ID:
-            	LoggerFactory.getLogger(this.getClass()).trace("[NET] " + message, throwable);
-            	break;
+                LoggerFactory.getLogger(this.getClass()).trace("[NET] " + message, throwable);
+                break;
             }
         }
 
         public void log(LogLevel level, String message, String extended) {
             switch (level.id) {
             case LogLevel.FATAL_ID:
-            	LoggerFactory.getLogger(this.getClass()).error("[NET] " + message, extended);
-            	break;
+                LoggerFactory.getLogger(this.getClass()).error("[NET] " + message, extended);
+                break;
             case LogLevel.ERROR_ID:
-            	LoggerFactory.getLogger(this.getClass()).error("[NET] " + message, extended);
-            	break;
+                LoggerFactory.getLogger(this.getClass()).error("[NET] " + message, extended);
+                break;
             case LogLevel.WARN_ID:
-            	LoggerFactory.getLogger(this.getClass()).warn("[NET] " + message, extended);
-            	break;
+                LoggerFactory.getLogger(this.getClass()).warn("[NET] " + message, extended);
+                break;
             case LogLevel.INFO_ID:
-            	LoggerFactory.getLogger(this.getClass()).info("[NET] " + message, extended);
-            	break;
+                LoggerFactory.getLogger(this.getClass()).info("[NET] " + message, extended);
+                break;
             case LogLevel.DEBUG_ID:
-            	LoggerFactory.getLogger(this.getClass()).debug("[NET] " + message, extended);
-            	break;
+                LoggerFactory.getLogger(this.getClass()).debug("[NET] " + message, extended);
+                break;
             case LogLevel.TRACE_ID:
-            	LoggerFactory.getLogger(this.getClass()).trace("[NET] " + message, extended);
-            	break;
+                LoggerFactory.getLogger(this.getClass()).trace("[NET] " + message, extended);
+                break;
             }
         }
     };
@@ -96,7 +96,7 @@ public final class NetworkAutologger implements LoggingTarget, CluckRemoteListen
      */
     public static void register() {
         if (registered) {
-        	LoggerFactory.getLogger(NetworkAutologger.class).warn("Network autologger registered twice!");
+            LoggerFactory.getLogger(NetworkAutologger.class).warn("Network autologger registered twice!");
             return;
         }
         registered = true;
@@ -137,17 +137,19 @@ public final class NetworkAutologger implements LoggingTarget, CluckRemoteListen
         searcher.event();
         node.subscribeToStructureNotifications("netwatch-" + hereID, new EventOutput() {
             public void event() {
-            	LoggerFactory.getLogger(NetworkAutologger.class).trace("[LOCAL] Rechecking logging...");
+                LoggerFactory.getLogger(NetworkAutologger.class).trace("[LOCAL] Rechecking logging...");
                 searcher.event();
             }
         });
     }
 
     public void log(LogLevel level, String message, Throwable throwable) {
-        if (message.contains("[NET]")) { // From the network, so don't broadcast.
+        if (message.contains("[NET]")) { // From the network, so don't
+                                         // broadcast.
             return;
         }
-        if (message.contains("[LOCAL]")) { // Local messages should not be sent over the network.
+        if (message.contains("[LOCAL]")) { // Local messages should not be sent
+                                           // over the network.
             return;
         }
         for (String cur : remotes) {
@@ -159,10 +161,12 @@ public final class NetworkAutologger implements LoggingTarget, CluckRemoteListen
     }
 
     public void log(LogLevel level, String message, String extended) {
-        if (message.contains("[NET]")) { // From the network, so don't broadcast.
+        if (message.contains("[NET]")) { // From the network, so don't
+                                         // broadcast.
             return;
         }
-        if (message.contains("[LOCAL]")) { // Should not be sent over the network.
+        if (message.contains("[LOCAL]")) { // Should not be sent over the
+                                           // network.
             return;
         }
         for (String cur : remotes) {

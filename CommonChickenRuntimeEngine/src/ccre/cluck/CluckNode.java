@@ -188,7 +188,7 @@ public class CluckNode implements Serializable {
     public void transmit(String target, String source, byte[] data, CluckLink denyLink) {
         if (target == null) {
             if (data.length == 0 || data[0] != RMT_NEGATIVE_ACK) {
-            	LoggerFactory.getLogger(this.getClass()).warn("Received message addressed to unreceving node (source: " + source + ")");
+                LoggerFactory.getLogger(this.getClass()).warn("Received message addressed to unreceving node (source: " + source + ")");
             }
         } else if ("*".equals(target)) {
             broadcast(source, data, denyLink);
@@ -212,7 +212,7 @@ public class CluckNode implements Serializable {
                         links.remove(direct);
                     }
                 } catch (Throwable ex) {
-                	LoggerFactory.getLogger(this.getClass()).error("Error while dispatching to Cluck link " + target, ex);
+                    LoggerFactory.getLogger(this.getClass()).error("Error while dispatching to Cluck link " + target, ex);
                 }
             }
         }
@@ -240,17 +240,19 @@ public class CluckNode implements Serializable {
                         links.remove(link);
                     }
                 } catch (Throwable ex) {
-                	LoggerFactory.getLogger(this.getClass()).error("Error while broadcasting to Cluck link " + link, ex);
+                    LoggerFactory.getLogger(this.getClass()).error("Error while broadcasting to Cluck link " + link, ex);
                 }
             }
         }
     }
 
     private void reportMissingLink(byte[] data, String source, String target, String direct) {
-        // Warnings about lost RMT_NEGATIVE_ACK messages or research messages are annoying, so don't send these,
+        // Warnings about lost RMT_NEGATIVE_ACK messages or research messages
+        // are annoying, so don't send these,
         // and don't warn about the same message path too quickly.
 
-        // We use System.currentTimeMillis() instead of Time.currentTimeMillis() because this is only to prevent message spam.
+        // We use System.currentTimeMillis() instead of Time.currentTimeMillis()
+        // because this is only to prevent message spam.
         if ((data.length == 0 || data[0] != RMT_NEGATIVE_ACK) && !target.contains("/rsch-") && (!direct.equals(lastMissingLink) || System.currentTimeMillis() >= lastMissingLinkError + 1000)) {
             lastMissingLink = direct;
             lastMissingLinkError = System.currentTimeMillis();
@@ -338,7 +340,7 @@ public class CluckNode implements Serializable {
             throw new NullPointerException();
         }
         if (links.get(linkName) != null) {
-        	LoggerFactory.getLogger(this.getClass()).debug("Replaced current link on: " + linkName);
+            LoggerFactory.getLogger(this.getClass()).debug("Replaced current link on: " + linkName);
         }
         links.put(linkName, link);
     }

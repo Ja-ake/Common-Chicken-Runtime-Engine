@@ -54,7 +54,7 @@ public class FileLogger implements LoggingTarget {
             }
             CCRELoggerFactory.getLogger().addTarget(new FileLogger("log-" + i));
         } catch (IOException ex) {
-        	CCRELoggerFactory.getLogger().warn("Could not set up File logging!", ex);
+            CCRELoggerFactory.getLogger().warn("Could not set up File logging!", ex);
         }
     }
 

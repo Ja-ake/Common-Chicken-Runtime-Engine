@@ -77,7 +77,8 @@ public class TickerTest {
     @Parameters
     public static Collection<Object[]> generateData() {
         ArrayList<Object[]> out = new ArrayList<>();
-        // the different timings here aren't really relevant - this just tests more birds with two stones.
+        // the different timings here aren't really relevant - this just tests
+        // more birds with two stones.
         out.add(new Object[] { 770, false });
         out.add(new Object[] { 760, true });
         return out;
@@ -101,7 +102,7 @@ public class TickerTest {
         if (ctr != counter) {
             fail("expected <" + ctr + "> but got <" + counter + "> in " + period);
         }
-        //assertEquals(ctr, counter);
+        // assertEquals(ctr, counter);
     }
 
     @Test
@@ -135,7 +136,8 @@ public class TickerTest {
     public void testFastCounting() throws InterruptedException {
         start(cb);
         fake.forward(period * 20);
-        // skipping time that fast doesn't work well with this version of Ticker - that's what the option is for!
+        // skipping time that fast doesn't work well with this version of Ticker
+        // - that's what the option is for!
         check(fixedRate ? 20 : 1);
     }
 
@@ -172,7 +174,7 @@ public class TickerTest {
 
     @Test
     public void testLoopTooManyErrors() throws InterruptedException {
-    	LoggerFactory.getLogger(this.getClass()).info("The following ticker main loop errors are purposeful.");
+        LoggerFactory.getLogger(this.getClass()).info("The following ticker main loop errors are purposeful.");
         start(() -> {
             synchronized (TickerTest.this) {
                 counter++;
@@ -182,7 +184,8 @@ public class TickerTest {
         for (int i = 0; i < 20; i++) {
             fake.forward(period);
         }
-        check(6);// only the first six would have occurred: after the exception gets thrown on that last time, it gets detached.
+        check(6);// only the first six would have occurred: after the exception
+                 // gets thrown on that last time, it gets detached.
         for (int i = 0; i < 10; i++) {
             fake.forward(period);
         }
@@ -191,7 +194,7 @@ public class TickerTest {
 
     @Test
     public void testLoopAFewErrors() throws InterruptedException {
-    	LoggerFactory.getLogger(this.getClass()).info("The following ticker main loop errors are purposeful.");
+        LoggerFactory.getLogger(this.getClass()).info("The following ticker main loop errors are purposeful.");
         start(() -> {
             synchronized (TickerTest.this) {
                 counter++;
@@ -200,7 +203,8 @@ public class TickerTest {
                 }
             }
         });
-        // here, unlike above, only five failures occur - so nothing gets detached, and it keeps working.
+        // here, unlike above, only five failures occur - so nothing gets
+        // detached, and it keeps working.
         for (int i = 0; i < 20; i++) {
             fake.forward(period);
         }
@@ -209,7 +213,7 @@ public class TickerTest {
 
     @Test
     public void testLoopScatteredErrors() throws InterruptedException {
-    	LoggerFactory.getLogger(this.getClass()).info("The following ticker main loop errors are purposeful.");
+        LoggerFactory.getLogger(this.getClass()).info("The following ticker main loop errors are purposeful.");
         start(() -> {
             synchronized (TickerTest.this) {
                 counter++;
@@ -218,7 +222,8 @@ public class TickerTest {
                 }
             }
         });
-        // here, unlike above, the failures happen infrequently enough that nothing actually gets detached, and it keeps working
+        // here, unlike above, the failures happen infrequently enough that
+        // nothing actually gets detached, and it keeps working
         for (int i = 0; i < 70; i++) {
             fake.forward(period);
         }

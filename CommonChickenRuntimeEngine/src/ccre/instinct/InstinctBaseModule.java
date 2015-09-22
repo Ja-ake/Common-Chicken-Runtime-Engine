@@ -203,7 +203,7 @@ public abstract class InstinctBaseModule {
      */
     protected void waitForTime(long milliseconds) throws InterruptedException, AutonomousModeOverException {
         if (milliseconds < 0) {
-        	LoggerFactory.getLogger(this.getClass()).warn("Negative wait in Instinct: " + milliseconds);
+            LoggerFactory.getLogger(this.getClass()).warn("Negative wait in Instinct: " + milliseconds);
             return;
         } else if (milliseconds == 0) {
             return;// Do nothing.

@@ -52,7 +52,7 @@ public class Version {
             try {
                 StorageSegment.loadProperties(props, false, versions);
             } catch (IOException e) {
-            	LoggerFactory.getLogger(Version.class).warn("IOException while reading /version.properties", e);
+                LoggerFactory.getLogger(Version.class).warn("IOException while reading /version.properties", e);
                 return "unknown version: could not load";
             }
             String version = versions.get("ccre-version");
@@ -64,7 +64,7 @@ public class Version {
             try {
                 props.close();
             } catch (IOException e) {
-            	LoggerFactory.getLogger(Version.class).warn("IOException while closing /version.properties", e);
+                LoggerFactory.getLogger(Version.class).warn("IOException while closing /version.properties", e);
             }
         }
     }

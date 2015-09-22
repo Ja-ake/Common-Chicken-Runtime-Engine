@@ -70,13 +70,14 @@ public abstract class ReporterThread extends Thread {
         } catch (OutOfMemoryError oom) {
             System.err.println("OutOfMemory");
             LoggerFactory.getLogger(this.getClass()).error("OutOfMemory");
-            throw oom; // The out-of-memory error will crash the system, at least in the Squawk VM.
+            throw oom; // The out-of-memory error will crash the system, at
+                       // least in the Squawk VM.
         } catch (InterruptedIOException ex) {
-        	LoggerFactory.getLogger(this.getClass()).warn("Interruption (during IO) of Thread " + this.getName(), ex);
+            LoggerFactory.getLogger(this.getClass()).warn("Interruption (during IO) of Thread " + this.getName(), ex);
         } catch (InterruptedException ex) {
-        	LoggerFactory.getLogger(this.getClass()).warn("Interruption of Thread " + this.getName(), ex);
+            LoggerFactory.getLogger(this.getClass()).warn("Interruption of Thread " + this.getName(), ex);
         } catch (Throwable thr) {
-        	LoggerFactory.getLogger(this.getClass()).error("Abrupt termination of Thread " + this.getName(), thr);
+            LoggerFactory.getLogger(this.getClass()).error("Abrupt termination of Thread " + this.getName(), thr);
         }
     }
 
