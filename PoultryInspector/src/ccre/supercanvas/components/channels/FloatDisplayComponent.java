@@ -45,7 +45,7 @@ import ccre.supercanvas.SuperCanvasPanel;
  * @author skeggsc
  */
 public class FloatDisplayComponent extends BaseChannelComponent<FloatDisplayComponent.View> implements FloatOutput {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(FloatDisplayComponent.class);
 
     static enum View {
         HORIZONTAL_POINTER, DIAL, TEXTUAL

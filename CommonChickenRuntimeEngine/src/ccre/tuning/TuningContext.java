@@ -38,7 +38,7 @@ import ccre.util.UniqueIds;
  * @author skeggsc
  */
 public final class TuningContext {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(TuningContext.class);
 
     /**
      * The node to publish the values to.

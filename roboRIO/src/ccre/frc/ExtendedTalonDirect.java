@@ -36,7 +36,7 @@ import ccre.time.Time;
  * @author skeggsc
  */
 public class ExtendedTalonDirect extends ExtendedMotor implements FloatOutput {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(ExtendedTalonDirect.class);
 
     private final CANTalonMod talon;
     private Boolean enableMode = null; // null until something cares. This means that it's not enabled, but could be automatically.

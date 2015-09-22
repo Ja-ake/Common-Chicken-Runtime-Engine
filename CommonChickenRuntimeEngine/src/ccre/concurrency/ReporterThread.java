@@ -34,7 +34,7 @@ import ccre.util.UniqueIds;
  * @author skeggsc
  */
 public abstract class ReporterThread extends Thread {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(ReporterThread.class);
 
     private static final UniqueIds idGen = new UniqueIds();
     /**

@@ -41,7 +41,7 @@ import ccre.log.LogLevel;
  * @author skeggsc
  */
 public class StateMachine {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(StateMachine.class);
     
     private int currentState;
     private final int numberOfStates;

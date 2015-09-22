@@ -37,7 +37,7 @@ import ccre.util.UniqueIds;
  * @author skeggsc
  */
 public class CluckTCPServer extends ConnectionReceiverThread {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(CluckTCPServer.class);
 
     /**
      * The shared CluckNode.

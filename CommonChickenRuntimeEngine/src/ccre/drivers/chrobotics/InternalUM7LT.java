@@ -40,7 +40,7 @@ import ccre.time.Time;
  * @see ccre.drivers.chrobotics.UM7LT
  */
 public class InternalUM7LT { // default rate: 115200 baud.
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(InternalUM7LT.class);
     
     private final SerialIO rs232;
     private final Object rs232lock = new Object();

@@ -44,7 +44,7 @@ import ccre.supercanvas.SuperCanvasPanel;
  * @author skeggsc
  */
 public class FloatControlComponent extends BaseChannelComponent<FloatControlComponent.View> {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(FloatControlComponent.class);
 
     private static final long serialVersionUID = -5862659067200938010L;
 

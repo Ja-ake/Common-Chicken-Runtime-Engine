@@ -28,7 +28,7 @@ import ccre.channel.EventOutput;
 
 // NOTE: this contains complex and likely slightly broken synchronization code. do not use it in production!
 public class FakeTime extends Time {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(FakeTime.class);
 
     private static final boolean debug = false;
 

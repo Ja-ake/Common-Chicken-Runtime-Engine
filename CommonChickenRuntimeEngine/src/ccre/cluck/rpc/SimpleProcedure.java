@@ -40,7 +40,7 @@ import ccre.time.Time;
  * @author skeggsc
  */
 public abstract class SimpleProcedure implements RemoteProcedure {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(SimpleProcedure.class);
 
     /**
      * The result returned when a SimpleProcedure call times out.

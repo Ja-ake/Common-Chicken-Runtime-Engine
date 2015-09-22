@@ -35,7 +35,7 @@ import ccre.frc.FRCApplication;
  * @author skeggsc
  */
 public class CANTest implements FRCApplication {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(CANTest.class);
 
     // WARNING: This has never actually been tested on a real robot.
 

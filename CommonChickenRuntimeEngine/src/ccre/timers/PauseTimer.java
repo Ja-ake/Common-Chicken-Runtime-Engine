@@ -40,7 +40,7 @@ import ccre.time.Time;
  * @author skeggsc
  */
 public class PauseTimer implements BooleanInput, EventOutput {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(PauseTimer.class);
 
     private volatile long endAt;
     private final long timeout;

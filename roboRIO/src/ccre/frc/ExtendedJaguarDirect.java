@@ -36,7 +36,7 @@ import ccre.time.Time;
  * @author skeggsc
  */
 public class ExtendedJaguarDirect extends ExtendedMotor implements FloatOutput {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(ExtendedJaguarDirect.class);
 
     private final CANJaguarMod jaguar;
     private Boolean enableMode = null; // null until something cares. This means that it's not enabled, but could be automatically.

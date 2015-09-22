@@ -29,7 +29,7 @@ import ccre.frc.FRCApplication;
  * @author skeggsc
  */
 public class Minimal implements FRCApplication {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(Minimal.class);
 
     /**
      * Set up the robot. For the minimal robot, this only means printing a

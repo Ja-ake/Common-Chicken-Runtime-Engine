@@ -38,7 +38,7 @@ import ccre.tuning.TuningContext;
  * @author skeggsc
  */
 public class InstinctMultiModule extends InstinctModule {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(InstinctMultiModule.class);
 
     /**
      * The list of modes registered with this InstinctMultiModule.

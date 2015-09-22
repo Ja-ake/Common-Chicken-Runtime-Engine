@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * @author skeggsc
  */
 public abstract class CluckSubscriber implements CluckLink {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(CluckSubscriber.class);
 
     /**
      * The CluckNode that this is attached to.

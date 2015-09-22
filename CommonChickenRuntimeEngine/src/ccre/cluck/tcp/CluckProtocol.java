@@ -40,15 +40,22 @@ import ccre.net.ClientSocket;
  * @author skeggsc
  */
 public class CluckProtocol {
-    static final int CURRENT_VERSION = 0;// NOTE: changing this will break
-                                         // compatibility with anything older
-                                         // than CCRE v3!
+    /**
+     * NOTE: changing this will break compatibility with anything older than
+     * CCRE v3!
+     */
+    static final int CURRENT_VERSION = 0;
     // also, it can only be, at most, 0xFF.
 
-    static final int TIMEOUT_PERIOD = 600;// milliseconds
-    static final int KEEPALIVE_INTERVAL = 200;// milliseconds, should always be
-                                              // noticeably less than
-                                              // TIMEOUT_PERIOD
+    /**
+     * Milliseconds
+     */
+    static final int TIMEOUT_PERIOD = 600;
+    
+    /**
+     * Milliseconds, should always be noticeably less than TIMEOUT_PERIOD
+     */
+    static final int KEEPALIVE_INTERVAL = 200;
 
     /**
      * Sets the appropriate timeout on sock, for disconnection reporting.
@@ -80,7 +87,7 @@ public class CluckProtocol {
         if ((raw_magic & 0xFFFF00FF) != 0x154000CA) {
             throw new IOException("Magic number did not match!");
         }
-        int version = (raw_magic & 0x0000FF00) >> 8;// always in [0, 255]
+        int version = (raw_magic & 0x0000FF00) >> 8; // always in [0, 255]
         if (version < CURRENT_VERSION) {
             // The side with the higher version (if they differ) is responsible
             // for providing a transformer to be compatible with the older
@@ -195,7 +202,7 @@ public class CluckProtocol {
         final ReporterThread main = new CluckSenderThread("Cluck-Send-" + linkName, queue, dout);
         main.start();
         CluckLink clink = new CluckLink() {
-            private Logger logger = LoggerFactory.getLogger(getClass());
+            private Logger logger = LoggerFactory.getLogger(CluckProtocol.class);
 
             private boolean isRunning = false;
 
@@ -270,7 +277,7 @@ public class CluckProtocol {
     }
 
     private static class CluckSenderThread extends ReporterThread {
-        private Logger logger = LoggerFactory.getLogger(getClass());
+        private static Logger logger = LoggerFactory.getLogger(CluckSenderThread.class);
 
         private final LinkedList<SendableEntry> queue;
         private final DataOutputStream dout;

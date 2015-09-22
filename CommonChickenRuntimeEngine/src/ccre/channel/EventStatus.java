@@ -36,7 +36,7 @@ import ccre.util.Utils;
  */
 public class EventStatus implements EventInput, EventOutput, Serializable {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(EventStatus.class);
     private static final long serialVersionUID = 115846451690403376L;
 
     /**

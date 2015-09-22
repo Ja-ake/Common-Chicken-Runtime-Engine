@@ -62,7 +62,7 @@ import ccre.util.UniqueIds;
  * @author skeggsc
  */
 public class NetworkPaletteComponent extends PaletteComponent<Collection<NetworkPaletteElement>> {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(NetworkPaletteComponent.class);
 
     /**
      * Fake RMT number used for merged event channels.

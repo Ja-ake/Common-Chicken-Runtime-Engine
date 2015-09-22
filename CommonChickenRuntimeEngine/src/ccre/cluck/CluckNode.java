@@ -39,7 +39,7 @@ import ccre.cluck.rpc.RPCManager;
  * @author skeggsc
  */
 public class CluckNode implements Serializable {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(CluckNode.class);
 
     private static final long serialVersionUID = -5439319159206467512L;
     /**

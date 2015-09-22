@@ -481,9 +481,8 @@ public class CluckPublisher {
                     try {
                         out.write(new byte[] { (byte) (count >> 8), (byte) count });
                         for (int i = 0; i < count; i++) {
-                            int len = data[i].contents.length + 1;// plus one
-                                                                  // for the
-                                                                  // type
+                            // plus one for the type
+                            int len = data[i].contents.length + 1;
                             out.write(new byte[] { (byte) (len >> 24), (byte) (len >> 16), (byte) (len >> 8), (byte) len, data[i].type });
                             out.write(data[i].contents);
                         }

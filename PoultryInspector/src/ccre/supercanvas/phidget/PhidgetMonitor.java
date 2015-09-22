@@ -55,7 +55,7 @@ import com.phidgets.event.SensorChangeListener;
  * @author skeggsc
  */
 public class PhidgetMonitor implements Serializable, AttachListener, DetachListener, ErrorListener, InputChangeListener, SensorChangeListener {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(PhidgetMonitor.class);
 
     private static final long serialVersionUID = -8665410515221749926L;
     /**

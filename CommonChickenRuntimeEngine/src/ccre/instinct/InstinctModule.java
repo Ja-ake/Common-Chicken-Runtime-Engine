@@ -31,7 +31,7 @@ import ccre.time.Time;
  * @author skeggsc
  */
 public abstract class InstinctModule extends InstinctBaseModule {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(InstinctModule.class);
 
     /**
      * If the instinct module should currently be running.

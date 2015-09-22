@@ -39,7 +39,7 @@ import ccre.channel.EventOutput;
  * @author skeggsc
  */
 public abstract class CollapsingWorkerThread extends ReporterThread implements EventOutput {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(CollapsingWorkerThread.class);
 
     /**
      * Does this thread need to run its work?

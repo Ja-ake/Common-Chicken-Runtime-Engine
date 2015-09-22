@@ -45,7 +45,7 @@ import ccre.supercanvas.SuperCanvasComponent;
  * @author skeggsc
  */
 public class SaveLoadComponent extends SuperCanvasComponent {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(SaveLoadComponent.class);
 
     private static final long serialVersionUID = -8609998417324680908L;
     private final int x, y;

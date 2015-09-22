@@ -37,7 +37,7 @@ import ccre.time.Time;
  * @author skeggsc
  */
 public class CommunicationFailureExtendedMotor extends ExtendedMotor implements FloatOutput {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(CommunicationFailureExtendedMotor.class);
 
     private final String message;
 

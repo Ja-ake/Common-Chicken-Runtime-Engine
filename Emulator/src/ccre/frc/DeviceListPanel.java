@@ -46,7 +46,7 @@ import ccre.util.Utils;
  * @author skeggsc
  */
 public final class DeviceListPanel extends JPanel implements Iterable<Device> {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(DeviceListPanel.class);
 
     private static final long serialVersionUID = 3194911460808795658L;
     /**

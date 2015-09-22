@@ -42,7 +42,7 @@ import ccre.time.Time;
 
 @RunWith(Parameterized.class)
 public class TickerTest {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(TickerTest.class);
 
     private static Time oldProvider;
     private static FakeTime fake;

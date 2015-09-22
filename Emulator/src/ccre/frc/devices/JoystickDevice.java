@@ -41,7 +41,7 @@ import ccre.frc.components.TextComponent;
  * @author skeggsc
  */
 public class JoystickDevice extends DeviceGroup {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(JoystickDevice.class);
 
     class ExternalJoystickAttachDevice extends Device {
         private final TextComponent status;

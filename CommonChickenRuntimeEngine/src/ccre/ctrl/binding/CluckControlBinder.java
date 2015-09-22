@@ -41,7 +41,7 @@ import ccre.storage.StorageSegment;
  * @author skeggsc
  */
 public class CluckControlBinder implements RConfable {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(CluckControlBinder.class);
 
     private final ControlBindingDataSource sourceSet;
     private final ControlBindingDataSink sinkSet;

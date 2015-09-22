@@ -37,7 +37,7 @@ import ccre.supercanvas.Rendering;
  * @author skeggsc
  */
 public class OutputStreamControlComponent extends DraggableBoxComponent {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(OutputStreamControlComponent.class);
 
     private static final long serialVersionUID = 800737743696942747L;
     private final OutputStream out;

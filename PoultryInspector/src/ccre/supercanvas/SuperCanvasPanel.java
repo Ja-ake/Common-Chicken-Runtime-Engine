@@ -51,7 +51,7 @@ import ccre.timers.ExpirationTimer;
  * @author skeggsc
  */
 public final class SuperCanvasPanel extends JPanel {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(SuperCanvasPanel.class);
 
     private static final long serialVersionUID = 7927046605855742517L;
     /**

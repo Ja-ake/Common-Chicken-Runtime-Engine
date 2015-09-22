@@ -33,7 +33,7 @@ import ccre.time.Time;
  * @author skeggsc
  */
 public abstract class InstinctBaseModule {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(InstinctBaseModule.class);
 
     /**
      * Wait until the specified BooleanInput becomes true before returning.

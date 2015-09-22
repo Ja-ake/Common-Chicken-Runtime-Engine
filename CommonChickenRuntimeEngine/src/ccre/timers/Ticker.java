@@ -34,7 +34,7 @@ import ccre.time.Time;
  * @author MillerV, SkeggsC
  */
 public final class Ticker implements EventInput {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(Ticker.class);
 
     private final EventStatus producer = new EventStatus();
     private final ReporterThread main;

@@ -32,7 +32,7 @@ import ccre.concurrency.ReporterThread;
  * @author skeggsc
  */
 public abstract class ConnectionReceiverThread extends ReporterThread {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(ConnectionReceiverThread.class);
 
     /**
      * The port that the server is started on.

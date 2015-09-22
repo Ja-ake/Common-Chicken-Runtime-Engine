@@ -37,7 +37,7 @@ import ccre.net.Network;
  * @author skeggsc
  */
 public class CluckTCPClient extends ReporterThread {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(CluckTCPClient.class);
 
     /**
      * The default port to run on.

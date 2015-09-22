@@ -33,7 +33,7 @@ import ccre.channel.SerialIO;
  * @author skeggsc
  */
 public class DisconnectedSerialIO implements SerialIO {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(DisconnectedSerialIO.class);
 
     private boolean closed = false;
 

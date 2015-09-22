@@ -42,7 +42,7 @@ import ccre.supercanvas.components.pinned.StartComponent;
  * @author skeggsc
  */
 public class SuperCanvasMain extends JFrame {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(SuperCanvasMain.class);
 
     /**
      * The main method of the Poultry Inspector.

@@ -48,7 +48,7 @@ import ccre.util.LineCollectorOutputStream;
  * @author skeggsc
  */
 public class CluckUnitTestComponent extends DraggableBoxComponent {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(CluckUnitTestComponent.class);
 
     private static final long serialVersionUID = 4921789619177479709L;
 

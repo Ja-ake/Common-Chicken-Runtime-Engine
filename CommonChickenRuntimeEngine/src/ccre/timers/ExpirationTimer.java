@@ -45,7 +45,7 @@ import ccre.time.Time;
  * @author skeggsc
  */
 public final class ExpirationTimer {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(ExpirationTimer.class);
 
     /**
      * The list of tasks, sorted in order with the first task (shortest delay)

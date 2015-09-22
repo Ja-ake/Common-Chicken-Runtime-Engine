@@ -36,7 +36,7 @@ import ccre.supercanvas.SuperCanvasComponent;
  * @author skeggsc
  */
 public class TrashComponent extends DraggableBoxComponent {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(TrashComponent.class);
 
     private static final long serialVersionUID = 6252825684766041481L;
 

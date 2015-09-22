@@ -39,7 +39,7 @@ import ccre.util.UniqueIds;
  * can be obtained using StorageProvider.
  */
 public final class StorageSegment {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(StorageSegment.class);
 
     private final HashMap<String, String> data = new HashMap<String, String>();
     private String name;

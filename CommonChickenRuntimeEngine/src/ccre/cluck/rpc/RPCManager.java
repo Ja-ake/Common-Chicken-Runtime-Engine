@@ -39,7 +39,7 @@ import ccre.util.UniqueIds;
  * @author skeggsc
  */
 public final class RPCManager implements Serializable {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(RPCManager.class);
 
     private static final long serialVersionUID = -2530136013743162226L;
     private final CluckNode node;

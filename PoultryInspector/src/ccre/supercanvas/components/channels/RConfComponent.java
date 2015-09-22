@@ -45,7 +45,7 @@ import ccre.timers.Ticker;
  * @author skeggsc
  */
 public class RConfComponent extends DraggableBoxComponent {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(RConfComponent.class);
 
     private final class UpdatingWorker extends CollapsingWorkerThread {
         private UpdatingWorker() {

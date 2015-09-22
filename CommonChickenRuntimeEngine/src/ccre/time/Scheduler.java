@@ -27,7 +27,7 @@ import ccre.channel.EventOutput;
 import ccre.concurrency.ReporterThread;
 
 public class Scheduler {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(Scheduler.class);
 
     private static final long MAXIMUM_REASONABLE_DELAY = 3;// warn if more than
                                                            // 3 milliseconds are

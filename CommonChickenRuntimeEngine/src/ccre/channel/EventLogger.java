@@ -31,7 +31,7 @@ import ccre.log.NetworkAutologger;
  * @author skeggsc
  */
 public final class EventLogger implements EventOutput {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(EventLogger.class);
 
     /**
      * When the specified event is fired, log the specified message at the

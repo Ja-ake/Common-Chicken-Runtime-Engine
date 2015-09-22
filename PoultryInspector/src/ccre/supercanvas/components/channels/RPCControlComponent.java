@@ -39,7 +39,7 @@ import ccre.supercanvas.Rendering;
  * @author skeggsc
  */
 public class RPCControlComponent extends DraggableBoxComponent {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(RPCControlComponent.class);
 
     private final class Receiver extends OutputStream implements Serializable {
         private static final long serialVersionUID = -8619972677259470148L;

@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.can.CANMessageNotFoundException;
  */
 @SuppressWarnings("javadoc")
 class CANJaguarMod {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(CANJaguarMod.class);
 
     public static final int kMaxMessageDataSize = 8;
 

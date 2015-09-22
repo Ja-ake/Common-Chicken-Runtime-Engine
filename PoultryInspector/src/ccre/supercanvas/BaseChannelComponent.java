@@ -38,7 +38,7 @@ import ccre.supercanvas.components.channels.RConfComponent;
  * @param <View> the type of the View enum used for this component.
  */
 public abstract class BaseChannelComponent<View extends Enum<View>> extends DraggableBoxComponent implements RConfable {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(BaseChannelComponent.class);
 
     private static final long serialVersionUID = 6151244350551965041L;
     /**

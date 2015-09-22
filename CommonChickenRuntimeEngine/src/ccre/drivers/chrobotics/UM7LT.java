@@ -42,7 +42,7 @@ import ccre.concurrency.ReporterThread;
  * @author skeggsc
  */
 public class UM7LT {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static Logger logger = LoggerFactory.getLogger(UM7LT.class);
     
     private final InternalUM7LT internal;
 
