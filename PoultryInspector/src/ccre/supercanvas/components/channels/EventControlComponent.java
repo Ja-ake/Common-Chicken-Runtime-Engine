@@ -46,7 +46,7 @@ public class EventControlComponent extends BaseChannelComponent<EventControlComp
     private transient long countStart;
     private final EventInput alternateSource;
     private final EventCell stat = new EventCell();
-    private EventOutput unsubscribe;
+    private transient EventOutput unsubscribe;
 
     /**
      * Create a new EventControlComponent with a EventOutput to control.

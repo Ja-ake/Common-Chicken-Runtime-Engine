@@ -51,11 +51,11 @@ public class FloatControlComponent extends BaseChannelComponent<FloatControlComp
 
     private float lastSentValue;
     private final FloatInput alternateSource;
-    private final FloatOutput rawOut;
+    private transient final FloatOutput rawOut;
     private float minimum = -1.0f, maximum = 1.0f;
     private boolean hasSentInitial = false;
     private StringBuilder activeBuffer;
-    private EventOutput unsubscribe;
+    private transient EventOutput unsubscribe;
 
     /**
      * Create a new FloatControlComponent with a FloatOutput to control.
@@ -83,17 +83,6 @@ public class FloatControlComponent extends BaseChannelComponent<FloatControlComp
         super(cx, cy, name);
         rawOut = out;
         alternateSource = inp;
-    }
-
-    /**
-     * Create a new FloatControlComponent.
-     *
-     * @param cx the X coordinate.
-     * @param cy the Y coordinate.
-     * @param name the name of the output.
-     */
-    public FloatControlComponent(int cx, int cy, String name) {
-        this(cx, cy, name, FloatOutput.ignored);
     }
 
     @Override

@@ -49,8 +49,8 @@ public class BooleanControlComponent extends BaseChannelComponent<BooleanControl
 
     private boolean lastSentValue;
     private final BooleanInput alternateSource;
-    private final BooleanOutput rawOut;
-    private EventOutput unsubscribe;
+    private transient final BooleanOutput rawOut;
+    private transient EventOutput unsubscribe;
 
     /**
      * Create a new BooleanControlComponent with a BooleanOutput to control.
@@ -62,17 +62,6 @@ public class BooleanControlComponent extends BaseChannelComponent<BooleanControl
      */
     public BooleanControlComponent(int cx, int cy, String name, BooleanOutput out) {
         this(cx, cy, name, null, out);
-    }
-
-    /**
-     * Create a new BooleanControlComponent.
-     *
-     * @param cx the X coordinate.
-     * @param cy the Y coordinate.
-     * @param name the name of the output.
-     */
-    public BooleanControlComponent(int cx, int cy, String name) {
-        this(cx, cy, name, BooleanOutput.ignored);
     }
 
     /**

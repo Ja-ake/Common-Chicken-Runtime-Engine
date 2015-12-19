@@ -80,13 +80,7 @@ public class TopLevelPaletteComponent extends PaletteComponent<Iterable<PaletteE
         public SuperCanvasComponent fetch(int x, int y) {
             try {
                 return aClass.getConstructor(Integer.TYPE, Integer.TYPE).newInstance(x, y);
-            } catch (NoSuchMethodException ex) {
-                throw new RuntimeException(ex);
-            } catch (InstantiationException ex) {
-                throw new RuntimeException(ex);
-            } catch (IllegalAccessException ex) {
-                throw new RuntimeException(ex);
-            } catch (InvocationTargetException ex) {
+            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
                 throw new RuntimeException(ex);
             }
         }

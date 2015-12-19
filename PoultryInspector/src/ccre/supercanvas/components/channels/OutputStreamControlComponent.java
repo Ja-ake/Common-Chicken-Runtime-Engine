@@ -37,7 +37,7 @@ import ccre.supercanvas.Rendering;
 public class OutputStreamControlComponent extends DraggableBoxComponent {
 
     private static final long serialVersionUID = 800737743696942747L;
-    private final OutputStream out;
+    private final transient OutputStream out;
     private final String name;
     private final StringBuilder contents = new StringBuilder();
     private boolean inBinaryMode = false;
